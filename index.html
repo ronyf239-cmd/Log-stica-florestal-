@@ -4,89 +4,469 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>VMI × Produtividade — Experimento</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f2f5f3;color:#173126;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
-header{background:#16452f;color:#fff;padding:22px 18px}header h1{margin:0;font-size:23px}header p{margin:6px 0 0;color:#d8e9df;font-size:13px}
-main{max-width:700px;margin:auto;padding:14px}.card{background:#fff;border-radius:18px;padding:17px;margin-bottom:14px;box-shadow:0 3px 12px #0000000d}
-h2{font-size:17px;margin:0 0 14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-label{font-size:12px;font-weight:700;color:#5c6963}input{width:100%;margin-top:5px;padding:12px;border:1px solid #ccd6d0;border-radius:10px;font-size:17px}
-button{width:100%;padding:15px;border:0;border-radius:12px;background:#19804b;color:#fff;font-size:16px;font-weight:800;margin-top:14px}
-.result{background:#edf7f1;border-radius:14px;padding:15px;margin-top:14px}.big{font-size:28px;font-weight:800}.sub{font-size:12px;color:#617068;margin-top:4px}
-table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px 7px;border-bottom:1px solid #e8ece9}th{font-size:11px;color:#637069}.selected{font-weight:800;background:#eef8f2}
-.note{font-size:12px;color:#627069;line-height:1.5}.ok{color:#167044;font-weight:800}
+*{box-sizing:border-box}
+
+body{
+margin:0;
+background:#f2f5f3;
+color:#173126;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif
+}
+
+header{
+background:#16452f;
+color:#fff;
+padding:22px 18px
+}
+
+header h1{
+margin:0;
+font-size:23px
+}
+
+header p{
+margin:6px 0 0;
+color:#d8e9df;
+font-size:13px
+}
+
+main{
+max-width:700px;
+margin:auto;
+padding:14px
+}
+
+.card{
+background:#fff;
+border-radius:18px;
+padding:17px;
+margin-bottom:14px;
+box-shadow:0 3px 12px #0000000d
+}
+
+h2{
+font-size:17px;
+margin:0 0 14px
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:11px
+}
+
+label{
+font-size:12px;
+font-weight:700;
+color:#5c6963
+}
+
+input{
+width:100%;
+margin-top:5px;
+padding:12px;
+border:1px solid #ccd6d0;
+border-radius:10px;
+font-size:17px
+}
+
+button{
+width:100%;
+padding:15px;
+border:0;
+border-radius:12px;
+background:#19804b;
+color:#fff;
+font-size:16px;
+font-weight:800;
+margin-top:14px
+}
+
+.result{
+background:#edf7f1;
+border-radius:14px;
+padding:15px;
+margin-top:14px
+}
+
+.big{
+font-size:28px;
+font-weight:800
+}
+
+.sub{
+font-size:12px;
+color:#617068;
+margin-top:4px
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+font-size:13px
+}
+
+th,td{
+text-align:left;
+padding:10px 7px;
+border-bottom:1px solid #e8ece9
+}
+
+th{
+font-size:11px;
+color:#637069
+}
+
+.selected{
+font-weight:800;
+background:#eef8f2
+}
+
+.note{
+font-size:12px;
+color:#627069;
+line-height:1.5
+}
 </style>
 </head>
+
 <body>
-<header><h1>🌲 VMI × Produtividade</h1><p>Experimento do motor de produtividade florestal</p></header>
+
+<header>
+<h1>🌲 VMI × Produtividade</h1>
+<p>Experimento do motor de produtividade florestal</p>
+</header>
+
 <main>
+
 <div class="card">
+
 <h2>🔎 Identificar VMI</h2>
-<label>VMI do talhão (m³/árvore)
-<input id="vmi" type="number" step="0.01" value="0.24" inputmode="decimal">
+
+<label>
+VMI do talhão (m³/árvore)
+
+<input
+id="vmi"
+type="number"
+step="0.01"
+value="0.24"
+inputmode="decimal">
 </label>
-<button id="identify">IDENTIFICAR VMI</button>
+
+<button id="identify">
+IDENTIFICAR VMI
+</button>
+
 <div id="result" class="result">
-<div class="big" id="prodText">2,0 ha / 19,5 h</div>
-<div class="sub" id="rangeText">VMI 0,21–0,30 m³/árvore</div>
-</div>
+
+<div class="big" id="prodText">
+2,0 ha / 19,5 h
 </div>
 
+<div class="sub" id="rangeText">
+VMI 0,21–0,30 m³/árvore
+</div>
+
+</div>
+
+</div>
+
+
 <div class="card">
+
 <h2>📋 Tabela cadastrada</h2>
+
 <table>
-<thead><tr><th>Faixa de VMI</th><th>Produtividade</th><th>Base</th></tr></thead>
+
+<thead>
+<tr>
+<th>Faixa de VMI</th>
+<th>Produtividade</th>
+<th>Base</th>
+</tr>
+</thead>
+
 <tbody>
-<tr id="r1"><td>0,15 – 0,20</td><td>1,8 ha</td><td>19,5 h</td></tr>
-<tr id="r2"><td>0,21 – 0,30</td><td>2,0 ha</td><td>19,5 h</td></tr>
+
+<tr id="r1">
+<td>0,15 – 0,20</td>
+<td>1,8 ha</td>
+<td>19,5 h</td>
+</tr>
+
+<tr id="r2">
+<td>0,21 – 0,30</td>
+<td>2,0 ha</td>
+<td>19,5 h</td>
+</tr>
+
 </tbody>
+
 </table>
-<p class="note">Por enquanto, o experimento usa somente as duas faixas que você informou. Não há extrapolação para outros VMIs.</p>
+
+<p class="note">
+Por enquanto, o experimento usa somente as duas faixas que você informou.
+Não há extrapolação para outros VMIs.
+</p>
+
 </div>
 
+
 <div class="card">
-<h2>🧮 Exemplo de cálculo</h2>
+
+<h2>🧮 Cálculo do talhão</h2>
+
 <div class="grid">
-<label>Área do talhão (ha)
-<input id="area" type="number" step="0.1" value="8">
+
+<label>
+Área do talhão (ha)
+
+<input
+id="area"
+type="number"
+step="0.1"
+value="8">
 </label>
-<label>Horas operacionais/dia
-<input id="hours" type="number" step="0.1" value="19.5">
+
+
+<label>
+Quantidade de máquinas
+
+<input
+id="machines"
+type="number"
+step="1"
+min="1"
+value="1"
+inputmode="numeric">
 </label>
-</div>
-<button id="calc">CALCULAR TÉRMINO DO TALHÃO</button>
-<div id="calcResult" class="result" style="display:none"></div>
+
+
+<label>
+Horas operacionais/dia
+
+<input
+id="hours"
+type="number"
+step="0.1"
+value="19.5">
+</label>
+
 </div>
 
-<div class="card">
-<h2>🎯 Como será o motor</h2>
-<p class="note">O aplicativo recebe o VMI, identifica automaticamente a faixa cadastrada e seleciona a produtividade. Depois, usando a área do talhão e as horas operacionais, estima o tempo necessário para concluir a área.</p>
+<button id="calc">
+CALCULAR TÉRMINO DO TALHÃO
+</button>
+
+<div
+id="calcResult"
+class="result"
+style="display:none">
 </div>
+
+</div>
+
+
+<div class="card">
+
+<h2>🎯 Motor de produtividade</h2>
+
+<p class="note">
+O aplicativo identifica o VMI do talhão, seleciona a produtividade
+correspondente e multiplica pela quantidade de máquinas.
+
+Assim:
+
+<strong>Produtividade por máquina × máquinas = produtividade total.</strong>
+
+Depois o sistema utiliza a área do talhão e as horas operacionais
+para estimar o tempo necessário para concluir a área.
+</p>
+
+</div>
+
 </main>
+
+
 <script>
+
 (function(){
-function num(id,def){var x=parseFloat(document.getElementById(id).value);return Number.isFinite(x)?x:def}
+
+function num(id,def){
+
+var x=parseFloat(
+document.getElementById(id).value
+);
+
+return Number.isFinite(x)?x:def;
+
+}
+
+
 function identify(){
- var v=num("vmi",0.24), prod=0, range="", row="";
- if(v>=0.15 && v<=0.20){prod=1.8;range="VMI 0,15–0,20 m³/árvore";row="r1"}
- else if(v>=0.21 && v<=0.30){prod=2.0;range="VMI 0,21–0,30 m³/árvore";row="r2"}
- else {document.getElementById("prodText").textContent="VMI fora da tabela";document.getElementById("rangeText").textContent="Cadastre uma faixa para este VMI";document.getElementById("r1").classList.remove("selected");document.getElementById("r2").classList.remove("selected");return}
- document.getElementById("prodText").textContent=prod.toFixed(1).replace(".",",")+" ha / 19,5 h";
- document.getElementById("rangeText").textContent=range;
- document.getElementById("r1").classList.remove("selected");document.getElementById("r2").classList.remove("selected");
- document.getElementById(row).classList.add("selected");
+
+var v=num("vmi",0.24);
+
+var prod=0;
+var range="";
+var row="";
+
+
+if(v>=0.15 && v<=0.20){
+
+prod=1.8;
+range="VMI 0,15–0,20 m³/árvore";
+row="r1";
+
 }
+
+else if(v>=0.21 && v<=0.30){
+
+prod=2.0;
+range="VMI 0,21–0,30 m³/árvore";
+row="r2";
+
+}
+
+else{
+
+document.getElementById("prodText").textContent=
+"VMI fora da tabela";
+
+document.getElementById("rangeText").textContent=
+"Cadastre uma faixa para este VMI";
+
+document.getElementById("r1")
+.classList.remove("selected");
+
+document.getElementById("r2")
+.classList.remove("selected");
+
+return;
+
+}
+
+
+document.getElementById("prodText").textContent=
+prod.toFixed(1).replace(".",",")
++" ha / 19,5 h";
+
+document.getElementById("rangeText").textContent=
+range;
+
+document.getElementById("r1")
+.classList.remove("selected");
+
+document.getElementById("r2")
+.classList.remove("selected");
+
+document.getElementById(row)
+.classList.add("selected");
+
+}
+
+
 function calc(){
- var v=num("vmi",0.24), area=num("area",8), hours=num("hours",19.5), prod=0;
- if(v>=0.15&&v<=0.20)prod=1.8;else if(v>=0.21&&v<=0.30)prod=2.0;
- var box=document.getElementById("calcResult");box.style.display="block";
- if(!prod){box.innerHTML='<b>VMI sem produtividade cadastrada.</b><div class="sub">Informe um VMI entre 0,15 e 0,30 para este experimento.</div>';return}
- var days=area/prod, totalH=days*hours;
- box.innerHTML='<div class="big">'+totalH.toFixed(1).replace(".",",")+' h</div><div class="sub">'+days.toFixed(2).replace(".",",")+' dias operacionais para '+area.toFixed(1).replace(".",",")+' ha · produtividade '+prod.toFixed(1).replace(".",",")+' ha/19,5 h</div>';
+
+var v=num("vmi",0.24);
+
+var area=num("area",8);
+
+var machines=Math.max(
+1,
+Math.floor(num("machines",1))
+);
+
+var hours=num("hours",19.5);
+
+var prod=0;
+
+
+if(v>=0.15 && v<=0.20){
+
+prod=1.8;
+
 }
-document.getElementById("identify").onclick=identify;
-document.getElementById("calc").onclick=calc;
-identify();calc();
+
+else if(v>=0.21 && v<=0.30){
+
+prod=2.0;
+
+}
+
+
+var box=document.getElementById("calcResult");
+
+box.style.display="block";
+
+
+if(!prod){
+
+box.innerHTML=
+"<b>VMI sem produtividade cadastrada.</b>"+
+"<div class='sub'>"+
+"Informe um VMI entre 0,15 e 0,30 para este experimento."+
+"</div>";
+
+return;
+
+}
+
+
+var totalProd=prod*machines;
+
+var days=area/totalProd;
+
+var totalH=days*hours;
+
+
+box.innerHTML=
+
+"<div class='big'>"+
+totalH.toFixed(1).replace(".",",")+
+" h"+
+"</div>"+
+
+"<div class='sub'>"+
+
+days.toFixed(2).replace(".",",")+
+
+" dias operacionais para "+
+
+area.toFixed(1).replace(".",",")+
+
+" ha · "+
+
+machines+
+
+" máquina(s) · produtividade total "+
+
+totalProd.toFixed(1).replace(".",",")+
+
+" ha/19,5 h"+
+
+"</div>";
+
+}
+
+
+document.getElementById("identify")
+.onclick=identify;
+
+document.getElementById("calc")
+.onclick=calc;
+
+
+identify();
+
+calc();
+
 })();
+
 </script>
+
 </body>
 </html>
