@@ -84,6 +84,32 @@ font-weight:800;
 margin-top:14px
 }
 
+/* TABELA DE VMI */
+.vmi-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:8px;
+margin-top:8px
+}
+
+.vmi-btn{
+width:100%;
+padding:12px 6px;
+margin:0;
+background:#f3f6f4;
+color:#173126;
+border:1px solid #cbd6d0;
+border-radius:10px;
+font-size:15px;
+font-weight:800
+}
+
+.vmi-btn.selected-vmi{
+background:#19804b;
+color:#fff;
+border-color:#19804b
+}
+
 .result{
 background:#edf7f1;
 border-radius:14px;
@@ -143,22 +169,37 @@ line-height:1.5
 
 <div class="card">
 
-<h2>🔎 Identificar VMI</h2>
+<h2>🔎 Selecionar VMI</h2>
 
 <label>
-VMI do talhão (m³/árvore)
-
-<input
-id="vmi"
-type="number"
-step="0.01"
-value="0.24"
-inputmode="decimal">
+Selecione o VMI do talhão (m³/árvore)
 </label>
 
-<button id="identify">
-IDENTIFICAR VMI
-</button>
+<div class="vmi-grid" id="vmiGrid">
+
+<button type="button" class="vmi-btn" data-vmi="0.15">0,15</button>
+<button type="button" class="vmi-btn" data-vmi="0.16">0,16</button>
+<button type="button" class="vmi-btn" data-vmi="0.17">0,17</button>
+<button type="button" class="vmi-btn" data-vmi="0.18">0,18</button>
+
+<button type="button" class="vmi-btn" data-vmi="0.19">0,19</button>
+<button type="button" class="vmi-btn" data-vmi="0.20">0,20</button>
+<button type="button" class="vmi-btn" data-vmi="0.21">0,21</button>
+<button type="button" class="vmi-btn" data-vmi="0.22">0,22</button>
+
+<button type="button" class="vmi-btn" data-vmi="0.23">0,23</button>
+<button type="button" class="vmi-btn selected-vmi" data-vmi="0.24">0,24</button>
+<button type="button" class="vmi-btn" data-vmi="0.25">0,25</button>
+<button type="button" class="vmi-btn" data-vmi="0.26">0,26</button>
+
+<button type="button" class="vmi-btn" data-vmi="0.27">0,27</button>
+<button type="button" class="vmi-btn" data-vmi="0.28">0,28</button>
+<button type="button" class="vmi-btn" data-vmi="0.29">0,29</button>
+<button type="button" class="vmi-btn" data-vmi="0.30">0,30</button>
+
+</div>
+
+<input id="vmi" type="hidden" value="0.24">
 
 <div id="result" class="result">
 
@@ -275,15 +316,23 @@ style="display:none">
 <h2>🎯 Motor de produtividade</h2>
 
 <p class="note">
-O aplicativo identifica o VMI do talhão, seleciona a produtividade
-correspondente e multiplica pela quantidade de máquinas.
 
-Assim:
+O operador seleciona o VMI do talhão na tabela.
 
-<strong>Produtividade por máquina × máquinas = produtividade total.</strong>
+O aplicativo identifica automaticamente a produtividade correspondente
+e multiplica pela quantidade de máquinas.
+
+<br><br>
+
+<strong>
+Produtividade por máquina × máquinas = produtividade total.
+</strong>
+
+<br><br>
 
 Depois o sistema utiliza a área do talhão e as horas operacionais
 para estimar o tempo necessário para concluir a área.
+
 </p>
 
 </div>
@@ -408,7 +457,7 @@ if(!prod){
 box.innerHTML=
 "<b>VMI sem produtividade cadastrada.</b>"+
 "<div class='sub'>"+
-"Informe um VMI entre 0,15 e 0,30 para este experimento."+
+"Selecione um VMI entre 0,15 e 0,30."+
 "</div>";
 
 return;
@@ -453,15 +502,44 @@ totalProd.toFixed(1).replace(".",",")+
 }
 
 
-document.getElementById("identify")
-.onclick=identify;
+/* CLIQUE NOS VMIs */
+
+document.querySelectorAll(".vmi-btn").forEach(function(btn){
+
+btn.addEventListener("click",function(){
+
+document.getElementById("vmi").value=
+btn.dataset.vmi;
+
+
+document.querySelectorAll(".vmi-btn")
+.forEach(function(b){
+
+b.classList.remove("selected-vmi");
+
+});
+
+
+btn.classList.add("selected-vmi");
+
+
+identify();
+calc();
+
+});
+
+});
+
+
+/* BOTÃO DE CÁLCULO */
 
 document.getElementById("calc")
 .onclick=calc;
 
 
-identify();
+/* INICIALIZAÇÃO */
 
+identify();
 calc();
 
 })();
