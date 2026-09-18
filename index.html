@@ -8,6 +8,7 @@
 <title>Floresta Performance</title>
 
 <style>
+
 *{
 box-sizing:border-box;
 }
@@ -84,13 +85,18 @@ font-weight:800;
 }
 
 .menu{
-width:42px;
-height:42px;
-border:1px solid rgba(255,255,255,.2);
+width:48px;
+height:48px;
+border:1px solid rgba(255,255,255,.25);
 background:rgba(255,255,255,.1);
 color:white;
-border-radius:13px;
-font-size:20px;
+border-radius:14px;
+font-size:22px;
+cursor:pointer;
+}
+
+.menu:active{
+transform:scale(.95);
 }
 
 .greeting{
@@ -219,6 +225,7 @@ color:var(--muted);
 font-weight:700;
 }
 
+
 /* VMI */
 
 .vmi-select{
@@ -278,6 +285,7 @@ border-color:var(--green2);
 color:white;
 }
 
+
 /* PRODUTIVIDADE */
 
 .prod-result{
@@ -322,6 +330,7 @@ padding:7px 9px;
 border-radius:9px;
 white-space:nowrap;
 }
+
 
 /* CAMPOS */
 
@@ -375,6 +384,7 @@ padding-right:10px;
 background:white;
 }
 
+
 /* BOTÃO */
 
 .calculate{
@@ -394,6 +404,7 @@ box-shadow:0 6px 15px rgba(24,117,71,.2);
 .calculate:active{
 transform:scale(.98);
 }
+
 
 /* RESULTADO */
 
@@ -451,6 +462,7 @@ font-size:14px;
 margin-top:3px;
 }
 
+
 /* MOTOR */
 
 .flow{
@@ -493,6 +505,9 @@ font-weight:900;
 color:var(--green2);
 }
 
+
+/* INFO */
+
 .info{
 display:flex;
 align-items:center;
@@ -522,6 +537,7 @@ font-size:11px;
 line-height:1.45;
 color:var(--muted);
 }
+
 
 /* MENU INFERIOR */
 
@@ -558,6 +574,226 @@ margin-top:2px;
 color:var(--green2);
 }
 
+
+/* MENU LATERAL */
+
+.menu-panel{
+display:none;
+position:fixed;
+top:0;
+right:0;
+width:min(88%,360px);
+height:100%;
+background:white;
+z-index:100;
+box-shadow:-8px 0 30px rgba(0,0,0,.18);
+overflow-y:auto;
+}
+
+.menu-panel.open{
+display:block;
+}
+
+.menu-header{
+background:linear-gradient(145deg,#123b29,#286b47);
+color:white;
+padding:24px 18px;
+}
+
+.menu-header-top{
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
+
+.menu-header h3{
+margin:0;
+font-size:20px;
+}
+
+.close-menu{
+width:42px;
+height:42px;
+border-radius:12px;
+border:1px solid rgba(255,255,255,.2);
+background:rgba(255,255,255,.1);
+color:white;
+font-size:23px;
+cursor:pointer;
+}
+
+.menu-content{
+padding:15px;
+}
+
+.menu-item{
+width:100%;
+border:1px solid var(--line);
+background:var(--soft);
+border-radius:16px;
+padding:15px;
+display:flex;
+align-items:center;
+gap:12px;
+text-align:left;
+cursor:pointer;
+margin-bottom:10px;
+color:var(--text);
+}
+
+.menu-item:active{
+transform:scale(.98);
+}
+
+.menu-item-icon{
+width:42px;
+height:42px;
+border-radius:12px;
+background:#e2efe7;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:20px;
+}
+
+.menu-item strong{
+display:block;
+font-size:14px;
+}
+
+.menu-item small{
+display:block;
+font-size:10px;
+color:var(--muted);
+margin-top:3px;
+}
+
+
+/* TABELA */
+
+.table-panel{
+display:none;
+}
+
+.table-panel.open{
+display:block;
+}
+
+.table-title{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:14px;
+}
+
+.table-back{
+width:40px;
+height:40px;
+border:1px solid var(--line);
+background:var(--soft);
+border-radius:12px;
+font-size:20px;
+cursor:pointer;
+}
+
+.table-title h3{
+margin:0;
+font-size:18px;
+}
+
+.table-title p{
+margin:3px 0 0;
+font-size:10px;
+color:var(--muted);
+}
+
+.table-wrap{
+border:1px solid var(--line);
+border-radius:15px;
+overflow:hidden;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+thead{
+background:var(--green);
+color:white;
+}
+
+th{
+padding:12px 9px;
+font-size:10px;
+text-align:left;
+font-weight:900;
+}
+
+th:last-child{
+text-align:center;
+}
+
+td{
+padding:8px 9px;
+border-top:1px solid var(--line);
+font-size:13px;
+font-weight:800;
+}
+
+td:first-child{
+width:45%;
+}
+
+td:last-child{
+text-align:center;
+}
+
+.tree-input{
+width:100%;
+height:38px;
+border:1px solid var(--line);
+border-radius:9px;
+background:var(--soft);
+padding:0 8px;
+font-size:14px;
+font-weight:900;
+text-align:center;
+color:var(--text);
+outline:none;
+}
+
+.tree-input:focus{
+border-color:var(--green2);
+background:white;
+}
+
+.table-note{
+margin-top:10px;
+padding:11px;
+border-radius:12px;
+background:#edf5f0;
+font-size:10px;
+line-height:1.4;
+color:var(--muted);
+}
+
+
+/* FUNDO DO MENU */
+
+.menu-overlay{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.35);
+z-index:90;
+}
+
+.menu-overlay.open{
+display:block;
+}
+
+
 @media(max-width:380px){
 
 .card{
@@ -580,11 +816,18 @@ gap:5px;
 padding:9px 1px;
 }
 
+.menu-panel{
+width:92%;
 }
+
+}
+
 </style>
 </head>
 
+
 <body>
+
 
 <header class="top">
 
@@ -595,15 +838,27 @@ padding:9px 1px;
 <div class="logo">🌲</div>
 
 <div>
+
 <h1>Floresta Performance</h1>
+
 <small>GESTÃO OPERACIONAL</small>
-</div>
 
 </div>
 
-<button class="menu" type="button">☰</button>
+</div>
+
+
+<button
+class="menu"
+id="menuButton"
+type="button"
+aria-label="Abrir menu"
+>
+☰
+</button>
 
 </div>
+
 
 <div class="greeting">
 
@@ -620,13 +875,18 @@ padding:9px 1px;
 
 <main>
 
+
 <div class="section-head">
+
 <h3>Visão geral</h3>
+
 <span>Operação atual</span>
+
 </div>
 
 
 <div class="metrics">
+
 
 <div class="metric">
 
@@ -671,31 +931,40 @@ padding:9px 1px;
 
 </div>
 
+
 </div>
 
 
-<!-- VMI -->
-
 <section class="card">
+
 
 <div class="card-head">
 
 <div class="card-icon">◈</div>
 
 <div>
+
 <h3>VMI do talhão</h3>
+
 <p>Selecione o volume médio individual</p>
-</div>
 
 </div>
 
+</div>
 
-<details class="vmi-select" id="vmiSelector">
+
+<details
+class="vmi-select"
+id="vmiSelector"
+>
 
 <summary>
 
 <span id="vmiSummary">
-VMI selecionado: <strong>0,24</strong>
+
+VMI selecionado:
+<strong>0,24</strong>
+
 </span>
 
 <span class="vmi-arrow">⌄</span>
@@ -705,25 +974,39 @@ VMI selecionado: <strong>0,24</strong>
 
 <div class="vmi-options">
 
+
 <button type="button" class="vmi-btn" data-vmi="0.15">0,15</button>
+
 <button type="button" class="vmi-btn" data-vmi="0.16">0,16</button>
+
 <button type="button" class="vmi-btn" data-vmi="0.17">0,17</button>
+
 <button type="button" class="vmi-btn" data-vmi="0.18">0,18</button>
 
 <button type="button" class="vmi-btn" data-vmi="0.19">0,19</button>
+
 <button type="button" class="vmi-btn" data-vmi="0.20">0,20</button>
+
 <button type="button" class="vmi-btn" data-vmi="0.21">0,21</button>
+
 <button type="button" class="vmi-btn" data-vmi="0.22">0,22</button>
 
 <button type="button" class="vmi-btn" data-vmi="0.23">0,23</button>
+
 <button type="button" class="vmi-btn active" data-vmi="0.24">0,24</button>
+
 <button type="button" class="vmi-btn" data-vmi="0.25">0,25</button>
+
 <button type="button" class="vmi-btn" data-vmi="0.26">0,26</button>
 
 <button type="button" class="vmi-btn" data-vmi="0.27">0,27</button>
+
 <button type="button" class="vmi-btn" data-vmi="0.28">0,28</button>
+
 <button type="button" class="vmi-btn" data-vmi="0.29">0,29</button>
+
 <button type="button" class="vmi-btn" data-vmi="0.30">0,30</button>
+
 
 </div>
 
@@ -736,9 +1019,13 @@ VMI selecionado: <strong>0,24</strong>
 
 <small>PRODUTIVIDADE BASE</small>
 
-<strong id="prodText">2,0 ha / 19,5 h</strong>
+<strong id="prodText">
+2,0 ha / 19,5 h
+</strong>
 
-<span id="rangeText">VMI 0,21 – 0,30</span>
+<span id="rangeText">
+VMI 0,21 – 0,30
+</span>
 
 </div>
 
@@ -748,20 +1035,23 @@ ATIVO
 
 </div>
 
+
 </section>
 
 
-<!-- DADOS DA OPERAÇÃO -->
-
 <section class="card">
+
 
 <div class="card-head">
 
 <div class="card-icon">⚙️</div>
 
 <div>
+
 <h3>Dados da operação</h3>
-<p>Digite os parâmetros para o cálculo</p>
+
+<p>Parâmetros para o cálculo</p>
+
 </div>
 
 </div>
@@ -844,26 +1134,36 @@ type="button"
 class="calculate"
 id="calc"
 >
-CALCULAR PLANEJAMENTO DO TALHÃO&nbsp;&nbsp; →
+CALCULAR PLANEJAMENTO DO TALHÃO →
 </button>
 
 
-<div class="calc-result" id="calcResult">
+<div
+class="calc-result"
+id="calcResult"
+>
 
 <div class="calc-title">
 PREVISÃO DE CONCLUSÃO
 </div>
 
-<div class="calc-big" id="totalHours">
+<div
+class="calc-big"
+id="totalHours"
+>
 78,0 h
 </div>
 
-<div class="calc-sub" id="daysText">
+<div
+class="calc-sub"
+id="daysText"
+>
 4,00 dias operacionais
 </div>
 
 
 <div class="calc-grid">
+
 
 <div class="calc-mini">
 
@@ -890,30 +1190,35 @@ MÁQUINAS
 
 </div>
 
+
 </div>
 
 </div>
+
 
 </section>
 
 
-<!-- MOTOR OPERACIONAL -->
-
 <section class="card">
+
 
 <div class="card-head">
 
 <div class="card-icon">⚡</div>
 
 <div>
+
 <h3>Motor operacional</h3>
+
 <p>Como o cálculo está sendo formado</p>
+
 </div>
 
 </div>
 
 
 <div class="flow">
+
 
 <div class="flow-item">
 
@@ -957,6 +1262,7 @@ MÁQUINAS
 
 </div>
 
+
 </div>
 
 
@@ -982,12 +1288,12 @@ CÁLCULO
 
 </div>
 
+
 </section>
 
 
-<!-- INFORMAÇÃO -->
-
 <section class="card">
+
 
 <div class="info">
 
@@ -1002,20 +1308,19 @@ CÁLCULO
 <p>
 O sistema identifica a faixa de VMI,
 aplica a produtividade por máquina e
-considera a quantidade de máquinas
-para estimar o tempo do talhão.
+considera a quantidade de máquinas.
 </p>
 
 </div>
 
 </div>
 
+
 </section>
+
 
 </main>
 
-
-<!-- MENU INFERIOR -->
 
 <nav class="bottom">
 
@@ -1047,16 +1352,363 @@ para estimar o tempo do talhão.
 </nav>
 
 
+<!-- FUNDO -->
+
+<div
+class="menu-overlay"
+id="menuOverlay"
+></div>
+
+
+<!-- MENU -->
+
+<aside
+class="menu-panel"
+id="menuPanel"
+>
+
+
+<div class="menu-header">
+
+<div class="menu-header-top">
+
+<h3>Menu operacional</h3>
+
+<button
+class="close-menu"
+id="closeMenu"
+type="button"
+>
+×
+</button>
+
+</div>
+
+</div>
+
+
+<div class="menu-content">
+
+
+<div id="menuOptions">
+
+
+<button
+class="menu-item"
+id="openTreeTable"
+type="button"
+>
+
+<div class="menu-item-icon">
+🌲
+</div>
+
+<div>
+
+<strong>Árvores/h por VMI</strong>
+
+<small>
+Tabela de produtividade por VMI
+</small>
+
+</div>
+
+</button>
+
+
+</div>
+
+
+<div
+class="table-panel"
+id="tablePanel"
+>
+
+
+<div class="table-title">
+
+
+<button
+class="table-back"
+id="tableBack"
+type="button"
+>
+‹
+</button>
+
+
+<div>
+
+<h3>Árvores/h por VMI</h3>
+
+<p>Cadastro editável</p>
+
+</div>
+
+
+</div>
+
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>VMI</th>
+
+<th>Árvores/h</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+
+<tr>
+<td>0,15</td>
+<td>
+<input class="tree-input" type="number" min="0" inputmode="numeric">
+</td>
+</tr>
+
+<tr>
+<td>0,16</td>
+<td>
+<input class="tree-input" type="number" min="0" inputmode="numeric">
+</td>
+</tr>
+
+<tr>
+<td>0,17</td>
+<td>
+<input class="tree-input" type="number" min="0" inputmode="numeric">
+</td>
+</tr>
+
+<tr>
+<td>0,18</td>
+<td>
+<input class="tree-input" type="number" min="0" inputmode="numeric">
+</td>
+</tr>
+
+<tr>
+<td>0,19</td>
+<td>
+<input class="tree-input" type="number" min="0" inputmode="numeric">
+</td>
+</tr>
+
+<tr>
+<td>0,20</td>
+<td>
+<input class="tree-input" type="number" min="0" inputmode="numeric">
+</td>
+</tr>
+
+<tr>
+<td>0,21</td>
+<td>
+<input class="tree-input" type="number" min="0" inputmode="numeric">
+</td>
+</tr>
+
+<tr>
+<td>0,22</td>
+<td>
+<input class="tree-input" type="number" min="0" inputmode="numeric">
+</td>
+</tr>
+
+<tr>
+<td>0,23</td>
+<td>
+<input class="tree-input" type="number" min="0" inputmode="numeric">
+</td>
+</tr>
+
+<tr>
+<td>0,24</td>
+<td>
+<input class="tree-input" type="number" min="0" inputmode="numeric">
+</td>
+</tr>
+
+<tr>
+<td>0,25</td>
+<td>
+<input class="tree-input" type="number" min="0" inputmode="numeric">
+</td>
+</tr>
+
+<tr>
+<td>0,26</td>
+<td>
+<input class="tree-input" type="number" min="0" inputmode="numeric">
+</td>
+</tr>
+
+<tr>
+<td>0,27</td>
+<td>
+<input class="tree-input" type="number" min="0" inputmode="numeric">
+</td>
+</tr>
+
+<tr>
+<td>0,28</td>
+<td>
+<input class="tree-input" type="number" min="0" inputmode="numeric">
+</td>
+</tr>
+
+<tr>
+<td>0,29</td>
+<td>
+<input class="tree-input" type="number" min="0" inputmode="numeric">
+</td>
+</tr>
+
+<tr>
+<td>0,30</td>
+<td>
+<input class="tree-input" type="number" min="0" inputmode="numeric">
+</td>
+</tr>
+
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<div class="table-note">
+
+Os valores de Árvores/h são cadastrados
+manualmente. Nesta etapa eles não
+alteram nenhum cálculo do aplicativo.
+
+</div>
+
+
+</div>
+
+</div>
+
+</aside>
+
+
 <script>
 
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded",function(){
 
-let selectedVMI = 0.24;
+let selectedVMI=0.24;
+
+
+/* MENU */
+
+const menuButton=
+document.getElementById("menuButton");
+
+const menuPanel=
+document.getElementById("menuPanel");
+
+const menuOverlay=
+document.getElementById("menuOverlay");
+
+const closeMenu=
+document.getElementById("closeMenu");
+
+const openTreeTable=
+document.getElementById("openTreeTable");
+
+const menuOptions=
+document.getElementById("menuOptions");
+
+const tablePanel=
+document.getElementById("tablePanel");
+
+const tableBack=
+document.getElementById("tableBack");
+
+
+function openMenu(){
+
+menuPanel.classList.add("open");
+
+menuOverlay.classList.add("open");
+
+}
+
+
+function closeMenuPanel(){
+
+menuPanel.classList.remove("open");
+
+menuOverlay.classList.remove("open");
+
+tablePanel.classList.remove("open");
+
+menuOptions.style.display="block";
+
+}
+
+
+menuButton.addEventListener(
+"click",
+openMenu
+);
+
+
+closeMenu.addEventListener(
+"click",
+closeMenuPanel
+);
+
+
+menuOverlay.addEventListener(
+"click",
+closeMenuPanel
+);
+
+
+/* ABRIR TABELA */
+
+openTreeTable.addEventListener(
+"click",
+function(){
+
+menuOptions.style.display="none";
+
+tablePanel.classList.add("open");
+
+}
+);
+
+
+/* VOLTAR */
+
+tableBack.addEventListener(
+"click",
+function(){
+
+tablePanel.classList.remove("open");
+
+menuOptions.style.display="block";
+
+}
+);
 
 
 /* FORMATAÇÃO */
 
-function formatNumber(number, decimals){
+function formatNumber(number,decimals){
 
 return Number(number)
 .toFixed(decimals)
@@ -1065,27 +1717,29 @@ return Number(number)
 }
 
 
-/* PRODUTIVIDADE POR VMI */
+/* PRODUTIVIDADE */
 
 function getProductivity(vmi){
 
-if(vmi >= 0.15 && vmi <= 0.20){
+if(vmi>=0.15 && vmi<=0.20){
 
-return {
+return{
 prod:1.8,
 range:"VMI 0,15 – 0,20"
 };
 
 }
 
-if(vmi >= 0.21 && vmi <= 0.30){
 
-return {
+if(vmi>=0.21 && vmi<=0.30){
+
+return{
 prod:2.0,
 range:"VMI 0,21 – 0,30"
 };
 
 }
+
 
 return null;
 
@@ -1096,39 +1750,54 @@ return null;
 
 function updateVMI(){
 
-let data = getProductivity(selectedVMI);
+let data=
+getProductivity(selectedVMI);
 
-document.getElementById("metricVmi").textContent =
+
+document.getElementById(
+"metricVmi"
+).textContent=
 formatNumber(selectedVMI,2);
 
-document.getElementById("flowVmi").textContent =
+
+document.getElementById(
+"flowVmi"
+).textContent=
 formatNumber(selectedVMI,2);
 
 
 if(!data){
-
-document.getElementById("prodText").textContent =
-"Não cadastrado";
-
-document.getElementById("rangeText").textContent =
-"VMI sem faixa";
 
 return;
 
 }
 
 
-document.getElementById("prodText").textContent =
-formatNumber(data.prod,1) + " ha / 19,5 h";
+document.getElementById(
+"prodText"
+).textContent=
+formatNumber(data.prod,1)
++" ha / 19,5 h";
 
-document.getElementById("rangeText").textContent =
+
+document.getElementById(
+"rangeText"
+).textContent=
 data.range;
 
-document.getElementById("metricProd").textContent =
-formatNumber(data.prod,1) + " ha";
 
-document.getElementById("flowProd").textContent =
-formatNumber(data.prod,1) + " ha";
+document.getElementById(
+"metricProd"
+).textContent=
+formatNumber(data.prod,1)
++" ha";
+
+
+document.getElementById(
+"flowProd"
+).textContent=
+formatNumber(data.prod,1)
++" ha";
 
 }
 
@@ -1137,51 +1806,48 @@ formatNumber(data.prod,1) + " ha";
 
 function calculate(){
 
-let areaInput =
-document.getElementById("area");
-
-let machinesInput =
-document.getElementById("machines");
-
-let hoursInput =
-document.getElementById("hours");
+let area=
+parseFloat(
+document.getElementById("area").value
+);
 
 
-let area =
-parseFloat(areaInput.value);
-
-let machines =
-parseInt(machinesInput.value);
-
-let hours =
-parseFloat(hoursInput.value);
+let machines=
+parseInt(
+document.getElementById("machines").value
+);
 
 
-/* VALIDAÇÕES */
+let hours=
+parseFloat(
+document.getElementById("hours").value
+);
 
-if(!Number.isFinite(area) || area < 0){
 
-area = 0;
+if(!Number.isFinite(area)||area<0){
 
-}
-
-if(!Number.isFinite(machines) || machines < 1){
-
-machines = 1;
-
-}
-
-if(!Number.isFinite(hours) || hours <= 0){
-
-hours = 19.5;
+area=0;
 
 }
 
 
-/* PRODUTIVIDADE */
+if(!Number.isFinite(machines)||machines<1){
 
-let data =
+machines=1;
+
+}
+
+
+if(!Number.isFinite(hours)||hours<=0){
+
+hours=19.5;
+
+}
+
+
+let data=
 getProductivity(selectedVMI);
+
 
 if(!data){
 
@@ -1190,164 +1856,164 @@ return;
 }
 
 
-/*
-REGRA:
-
-0,15 até 0,20 = 1,8 ha / 19,5 h
-
-0,21 até 0,30 = 2,0 ha / 19,5 h
-*/
-
-
-let productivityPerMachine =
+let productivityPerMachine=
 data.prod;
 
 
-/* PRODUTIVIDADE TOTAL */
-
-let totalProductivity =
-productivityPerMachine * machines;
+let totalProductivity=
+productivityPerMachine*machines;
 
 
-/* HORAS NECESSÁRIAS */
-
-let totalHours =
-(area / totalProductivity) * 19.5;
+let totalHours=
+(area/totalProductivity)*19.5;
 
 
-/* DIAS */
-
-let days =
-totalHours / hours;
+let days=
+totalHours/hours;
 
 
-/* ATUALIZA PAINEL */
+document.getElementById(
+"metricArea"
+).textContent=
+formatNumber(area,1)+" ha";
 
-document.getElementById("metricArea").textContent =
-formatNumber(area,1) + " ha";
 
-document.getElementById("metricMachines").textContent =
+document.getElementById(
+"metricMachines"
+).textContent=
 machines;
 
-document.getElementById("flowMachines").textContent =
+
+document.getElementById(
+"flowMachines"
+).textContent=
 machines;
 
-document.getElementById("flowTotal").textContent =
-formatNumber(totalProductivity,1) + " ha";
 
-document.getElementById("totalHours").textContent =
-formatNumber(totalHours,1) + " h";
-
-document.getElementById("daysText").textContent =
-formatNumber(days,2) + " dias operacionais";
-
-document.getElementById("totalProd").textContent =
-formatNumber(totalProductivity,1) + " ha / 19,5 h";
-
-document.getElementById("resultMachines").textContent =
-machines === 1
-? "1 máquina"
-: machines + " máquinas";
+document.getElementById(
+"flowTotal"
+).textContent=
+formatNumber(totalProductivity,1)+" ha";
 
 
-/* MOSTRA RESULTADO */
+document.getElementById(
+"totalHours"
+).textContent=
+formatNumber(totalHours,1)+" h";
 
-document.getElementById("calcResult").style.display =
+
+document.getElementById(
+"daysText"
+).textContent=
+formatNumber(days,2)
++" dias operacionais";
+
+
+document.getElementById(
+"totalProd"
+).textContent=
+formatNumber(totalProductivity,1)
++" ha / 19,5 h";
+
+
+document.getElementById(
+"resultMachines"
+).textContent=
+machines===1
+?"1 máquina"
+:machines+" máquinas";
+
+
+document.getElementById(
+"calcResult"
+).style.display=
 "block";
 
 }
 
 
-/* BOTÕES DE VMI */
+/* VMI */
 
-let vmiButtons =
-document.querySelectorAll(".vmi-btn");
+document.querySelectorAll(".vmi-btn")
+.forEach(function(button){
+
+button.addEventListener(
+"click",
+function(){
+
+selectedVMI=
+parseFloat(
+this.dataset.vmi
+);
 
 
-vmiButtons.forEach(function(button){
-
-button.addEventListener("click",function(){
-
-selectedVMI =
-parseFloat(this.getAttribute("data-vmi"));
-
-
-/* REMOVE ATIVO */
-
-vmiButtons.forEach(function(btn){
+document.querySelectorAll(".vmi-btn")
+.forEach(function(btn){
 
 btn.classList.remove("active");
 
 });
 
 
-/* MARCA SELECIONADO */
-
 this.classList.add("active");
 
 
-/* ALTERA TEXTO */
-
-document.getElementById("vmiSummary").innerHTML =
-"VMI selecionado: <strong>" +
-this.textContent +
-"</strong>";
-
-
-/* FECHA MENU */
-
-document.getElementById("vmiSelector").open =
-false;
+document.getElementById(
+"vmiSummary"
+).innerHTML=
+"VMI selecionado: <strong>"
++this.textContent
++"</strong>";
 
 
-/* ATUALIZA */
+document.getElementById(
+"vmiSelector"
+).open=false;
+
 
 updateVMI();
 
 calculate();
 
-});
+}
+);
 
 });
 
 
-/* BOTÃO CALCULAR */
+/* CALCULAR */
 
 document.getElementById("calc")
-.addEventListener("click",function(){
+.addEventListener(
+"click",
+calculate
+);
 
-calculate();
 
-});
-
-
-/* ATUALIZA ENQUANTO DIGITA */
+/* CAMPOS */
 
 document.getElementById("area")
-.addEventListener("input",function(){
-
-calculate();
-
-});
+.addEventListener(
+"input",
+calculate
+);
 
 
 document.getElementById("machines")
-.addEventListener("input",function(){
-
-calculate();
-
-});
+.addEventListener(
+"input",
+calculate
+);
 
 
 document.getElementById("hours")
-.addEventListener("input",function(){
+.addEventListener(
+"input",
+calculate
+);
 
-calculate();
 
-});
-
-
-/* PRIMEIRA EXECUÇÃO */
+/* INICIALIZA */
 
 updateVMI();
 
