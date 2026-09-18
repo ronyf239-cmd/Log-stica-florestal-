@@ -1,617 +1,95 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+// ===============================
+// CÁLCULO DE PRODUÇÃO - HARVESTER
+// ===============================
 
-<title>Planejamento de Colheita</title>
+// CONFIGURAÇÕES
+const PRODUTIVIDADE_BASE = 1.8; // ha por máquina
+const HORAS_OPERACIONAIS = 19.5;
+const HORAS_CORRIDAS_DIA = 24;
 
-<style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: Arial, Helvetica, sans-serif;
+/**
+ * Calcula o prazo de produção
+ *
+ * @param {number} area - Área em hectares
+ * @param {number} maquinas - Quantidade de máquinas
+ * @param {string} horarioInicio - Horário da medição, exemplo: "10:00"
+ * @returns {object} resultado do cálculo
+ */
+function calcularProducao(area, maquinas, horarioInicio) {
+
+    // Validação
+    if (area <= 0 || maquinas <= 0) {
+        throw new Error("Área e quantidade de máquinas devem ser maiores que zero.");
     }
 
-    body {
-        background: #f2f4f5;
-        color: #222;
-        min-height: 100vh;
-    }
-
-    header {
-        background: #006b3c;
-        color: white;
-        padding: 22px 18px;
-        text-align: center;
-    }
-
-    header h1 {
-        font-size: 23px;
-        margin-bottom: 6px;
-    }
-
-    header p {
-        font-size: 14px;
-        opacity: 0.9;
-    }
-
-    .container {
-        max-width: 600px;
-        margin: auto;
-        padding: 18px;
-    }
-
-    .card {
-        background: white;
-        border-radius: 16px;
-        padding: 20px;
-        margin-bottom: 16px;
-        box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    }
-
-    .card h2 {
-        font-size: 18px;
-        margin-bottom: 18px;
-        color: #006b3c;
-    }
-
-    label {
-        display: block;
-        font-weight: bold;
-        font-size: 14px;
-        margin-bottom: 7px;
-    }
-
-    input,
-    select {
-        width: 100%;
-        padding: 14px;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        font-size: 16px;
-        margin-bottom: 16px;
-        background: white;
-    }
-
-    button {
-        width: 100%;
-        padding: 16px;
-        border: none;
-        border-radius: 11px;
-        background: #006b3c;
-        color: white;
-        font-size: 17px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    button:active {
-        transform: scale(0.98);
-    }
-
-    .resultado {
-        display: none;
-    }
-
-    .resultado-principal {
-        text-align: center;
-        background: #e8f5ee;
-        border-radius: 14px;
-        padding: 20px;
-        margin-bottom: 18px;
-    }
-
-    .resultado-principal .titulo {
-        font-size: 14px;
-        color: #555;
-        margin-bottom: 7px;
-    }
-
-    .resultado-principal .valor {
-        font-size: 32px;
-        font-weight: bold;
-        color: #006b3c;
-    }
-
-    .linha {
-        display: flex;
-        justify-content: space-between;
-        padding: 12px 0;
-        border-bottom: 1px solid #eee;
-        font-size: 15px;
-    }
-
-    .linha:last-child {
-        border-bottom: none;
-    }
-
-    .linha strong {
-        color: #006b3c;
-    }
-
-    .conclusao {
-        margin-top: 18px;
-        padding: 18px;
-        border-radius: 12px;
-        background: #f5f5f5;
-        text-align: center;
-    }
-
-    .conclusao small {
-        display: block;
-        color: #666;
-        margin-bottom: 6px;
-    }
-
-    .conclusao strong {
-        font-size: 22px;
-        color: #006b3c;
-    }
-
-    .erro {
-        display: none;
-        background: #ffe8e8;
-        color: #a00000;
-        padding: 12px;
-        border-radius: 10px;
-        margin-bottom: 15px;
-        font-size: 14px;
-    }
-
-    footer {
-        text-align: center;
-        padding: 20px;
-        color: #777;
-        font-size: 12px;
-    }
-</style>
-</head>
-
-<body>
-
-<header>
-    <h1>Planejamento de Colheita</h1>
-    <p>Cálculo de produção operacional</p>
-</header>
-
-<div class="container">
-
-    <div class="card">
-
-        <h2>Dados da operação</h2>
-
-        <div id="erro" class="erro"></div>
-
-        <label for="area">Área do talhão (hectares)</label>
-        <input
-            type="number"
-            id="area"
-            placeholder="Ex.: 3,6"
-            step="0.01"
-            min="0"
-        >
-
-        <label for="maquinas">Quantidade de máquinas</label>
-        <input
-            type="number"
-            id="maquinas"
-            placeholder="Ex.: 2"
-            step="1"
-            min="1"
-        >
-
-        <label for="vmi">VMI</label>
-        <input
-            type="number"
-            id="vmi"
-            placeholder="Ex.: 0,23"
-            step="0.01"
-            min="0"
-        >
-
-        <label for="horario">Horário da medição</label>
-        <input
-            type="time"
-            id="horario"
-            value="10:00"
-        >
-
-        <button onclick="calcular()">
-            CALCULAR PRODUÇÃO
-        </button>
-
-    </div>
-
-
-    <div id="resultado" class="card resultado">
-
-        <h2>Resultado da operação</h2>
-
-        <div class="resultado-principal">
-
-            <div class="titulo">
-                Tempo estimado de entrega
-            </div>
-
-            <div id="tempoCorrida" class="valor">
-                --
-            </div>
-
-        </div>
-
-
-        <div class="linha">
-            <span>Área</span>
-            <strong id="rArea">--</strong>
-        </div>
-
-        <div class="linha">
-            <span>Máquinas</span>
-            <strong id="rMaquinas">--</strong>
-        </div>
-
-        <div class="linha">
-            <span>VMI</span>
-            <strong id="rVmi">--</strong>
-        </div>
-
-        <div class="linha">
-            <span>Produtividade/máquina</span>
-            <strong>1,80 ha</strong>
-        </div>
-
-        <div class="linha">
-            <span>Horas operacionais</span>
-            <strong>19,5 h</strong>
-        </div>
-
-        <div class="linha">
-            <span>Produção do grupo</span>
-            <strong id="rProducao">--</strong>
-        </div>
-
-        <div class="linha">
-            <span>Horas operacionais necessárias</span>
-            <strong id="rHorasOperacionais">--</strong>
-        </div>
-
-        <div class="linha">
-            <span>Horas corridas</span>
-            <strong id="rHorasCorridas">--</strong>
-        </div>
-
-
-        <div class="conclusao">
-
-            <small>
-                Previsão de conclusão
-            </small>
-
-            <strong id="rConclusao">
-                --
-            </strong>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<footer>
-    Sistema de planejamento operacional
-</footer>
-
-
-<script>
-
-    // ==========================================
-    // CONFIGURAÇÕES DA PRODUTIVIDADE
-    // ==========================================
-
-    const PRODUTIVIDADE_BASE = 1.8;
-
-    // Horas realmente produtivas dentro de um período
-    const HORAS_OPERACIONAIS = 19.5;
-
-    // O prazo de entrega é contado em 24 horas corridas
-    const HORAS_CORRIDAS_DIA = 24;
-
-
-    // ==========================================
-    // FUNÇÃO PRINCIPAL
-    // ==========================================
-
-    function calcular() {
-
-        const area = parseFloat(
-            document.getElementById("area").value.replace(",", ".")
-        );
-
-        const maquinas = parseInt(
-            document.getElementById("maquinas").value
-        );
-
-        const vmi = parseFloat(
-            document.getElementById("vmi").value.replace(",", ".")
-        );
-
-        const horario = document.getElementById("horario").value;
-
-        const erro = document.getElementById("erro");
-
-
-        // ------------------------------------------
-        // VALIDAÇÃO
-        // ------------------------------------------
-
-        if (!area || area <= 0) {
-            mostrarErro("Informe a área do talhão.");
-            return;
-        }
-
-        if (!maquinas || maquinas <= 0) {
-            mostrarErro("Informe a quantidade de máquinas.");
-            return;
-        }
-
-        if (isNaN(vmi) || vmi < 0) {
-            mostrarErro("Informe o VMI.");
-            return;
-        }
-
-        if (!horario) {
-            mostrarErro("Informe o horário da medição.");
-            return;
-        }
-
-
-        erro.style.display = "none";
-
-
-        // ==========================================
-        // 1 - PRODUÇÃO DO GRUPO
-        // ==========================================
-
-        /*
-            Cada máquina produz:
-
-            1,8 ha em 19,5 horas operacionais.
-
-            Portanto:
-
-            1,8 × quantidade de máquinas
-        */
-
-        const producaoPorCiclo =
-            PRODUTIVIDADE_BASE * maquinas;
-
-
-        // ==========================================
-        // 2 - QUANTIDADE DE CICLOS
-        // ==========================================
-
-        /*
-            Exemplo:
-
-            3,6 ha / 3,6 ha
-            = 1 ciclo
-        */
-
-        const ciclos =
-            area / producaoPorCiclo;
-
-
-        // ==========================================
-        // 3 - HORAS OPERACIONAIS
-        // ==========================================
-
-        /*
-            Cada ciclo possui 19,5 horas operacionais.
-        */
-
-        const horasOperacionais =
-            ciclos * HORAS_OPERACIONAIS;
-
-
-        // ==========================================
-        // 4 - HORAS CORRIDAS
-        // ==========================================
-
-        /*
-            Cada ciclo corresponde a 24 horas corridas.
-
-            Exemplo:
-
-            1 ciclo = 24 horas corridas
-
-            2 ciclos = 48 horas corridas
-        */
-
-        const horasCorridas =
-            ciclos * HORAS_CORRIDAS_DIA;
-
-
-        // ==========================================
-        // 5 - PREVISÃO DE CONCLUSÃO
-        // ==========================================
-
-        const agora = new Date();
-
-        const [hora, minuto] =
-            horario.split(":").map(Number);
-
-        const inicio = new Date(
-            agora.getFullYear(),
-            agora.getMonth(),
-            agora.getDate(),
-            hora,
-            minuto,
-            0,
-            0
-        );
-
-
-        const conclusao = new Date(
-            inicio.getTime() +
-            horasCorridas * 60 * 60 * 1000
-        );
-
-
-        // ==========================================
-        // 6 - MOSTRAR RESULTADOS
-        // ==========================================
-
-        document.getElementById("resultado").style.display = "block";
-
-
-        document.getElementById("rArea").textContent =
-            formatarNumero(area) + " ha";
-
-
-        document.getElementById("rMaquinas").textContent =
-            maquinas;
-
-
-        document.getElementById("rVmi").textContent =
-            formatarNumero(vmi);
-
-
-        document.getElementById("rProducao").textContent =
-            formatarNumero(producaoPorCiclo) + " ha / 19,5 h";
-
-
-        document.getElementById("rHorasOperacionais").textContent =
-            formatarNumero(horasOperacionais) + " h";
-
-
-        document.getElementById("rHorasCorridas").textContent =
-            formatarNumero(horasCorridas) + " h";
-
-
-        document.getElementById("tempoCorrida").textContent =
-            formatarTempo(horasCorridas);
-
-
-        document.getElementById("rConclusao").textContent =
-            formatarDataHora(conclusao);
-
-
-        // Rola até o resultado
-        document.getElementById("resultado").scrollIntoView({
-            behavior: "smooth"
-        });
-    }
-
-
-    // ==========================================
-    // FORMATAR NÚMEROS
-    // ==========================================
-
-    function formatarNumero(numero) {
-
-        return numero.toLocaleString("pt-BR", {
-            minimumFractionDigits: 1,
-            maximumFractionDigits: 2
-        });
-
-    }
-
-
-    // ==========================================
-    // FORMATAR TEMPO
-    // ==========================================
-
-    function formatarTempo(horas) {
-
-        const dias = Math.floor(horas / 24);
-
-        const horasRestantes =
-            Math.floor(horas % 24);
-
-        const minutos =
-            Math.round(
-                (horas % 1) * 60
-            );
-
-
-        if (dias > 0) {
-
-            if (horasRestantes > 0 && minutos > 0) {
-
-                return `${dias} dia(s), ${horasRestantes} h e ${minutos} min`;
-
-            }
-
-            if (horasRestantes > 0) {
-
-                return `${dias} dia(s) e ${horasRestantes} h`;
-
-            }
-
-            return `${dias} dia(s)`;
-
-        }
-
-
-        if (minutos > 0) {
-
-            return `${horasRestantes} h e ${minutos} min`;
-
-        }
-
-
-        return `${horasRestantes} h`;
-    }
-
-
-    // ==========================================
-    // FORMATAR DATA E HORA
-    // ==========================================
-
-    function formatarDataHora(data) {
-
-        const dia =
-            String(data.getDate()).padStart(2, "0");
-
-        const mes =
-            String(data.getMonth() + 1).padStart(2, "0");
-
-        const ano =
-            data.getFullYear();
-
-
-        const hora =
-            String(data.getHours()).padStart(2, "0");
-
-        const minuto =
-            String(data.getMinutes()).padStart(2, "0");
-
-
-        return `${dia}/${mes}/${ano} às ${hora}:${minuto}`;
-    }
-
-
-    // ==========================================
-    // MENSAGEM DE ERRO
-    // ==========================================
-
-    function mostrarErro(mensagem) {
-
-        const erro =
-            document.getElementById("erro");
-
-        erro.textContent = mensagem;
-
-        erro.style.display = "block";
-
-        document.getElementById("resultado").style.display =
-            "none";
-    }
-
-</script>
-
-</body>
-</html>
+    // Produção total das máquinas em 19,5 horas operacionais
+    const producaoPorCiclo = PRODUTIVIDADE_BASE * maquinas;
+
+    // Quantidade de ciclos necessários
+    const ciclos = area / producaoPorCiclo;
+
+    // Horas operacionais necessárias
+    const horasOperacionais = ciclos * HORAS_OPERACIONAIS;
+
+    // Converter horas operacionais para horas corridas
+    const horasCorridas = ciclos * HORAS_CORRIDAS_DIA;
+
+    // Calcular previsão de conclusão
+    const [hora, minuto] = horarioInicio.split(":").map(Number);
+
+    const inicio = new Date();
+    inicio.setHours(hora, minuto, 0, 0);
+
+    const conclusao = new Date(
+        inicio.getTime() + horasCorridas * 60 * 60 * 1000
+    );
+
+    return {
+        area,
+        maquinas,
+        produtividadePorMaquina: PRODUTIVIDADE_BASE,
+        producaoPorCiclo,
+        ciclos,
+        horasOperacionais,
+        horasCorridas,
+        horarioInicio: inicio,
+        horarioConclusao: conclusao
+    };
+}
+
+
+// ===============================
+// EXEMPLO
+// ===============================
+
+const resultado = calcularProducao(
+    3.6,    // hectares
+    2,      // máquinas
+    "10:00" // horário da medição
+);
+
+console.log("Área:", resultado.area, "ha");
+console.log("Máquinas:", resultado.maquinas);
+console.log(
+    "Produção:",
+    resultado.producaoPorCiclo.toFixed(2),
+    "ha / 19,5 h operacionais"
+);
+
+console.log(
+    "Horas operacionais:",
+    resultado.horasOperacionais.toFixed(1)
+);
+
+console.log(
+    "Horas corridas:",
+    resultado.horasCorridas.toFixed(1)
+);
+
+console.log(
+    "Conclusão:",
+    resultado.horarioConclusao.toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit"
+    })
+);
