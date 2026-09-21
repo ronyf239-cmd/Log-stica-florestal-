@@ -80,11 +80,17 @@ main{padding:14px}
     </div>
     <button class="calc" id="calculate">CALCULAR PLANEJAMENTO â</button>
     <div class="result" id="result">
-      <div class="ey">PREVISÃO DO TALHÃO</div>
+      <div class="ey">RESULTADO DO PLANEJAMENTO</div>
       <div class="big" id="totalHours">â</div>
       <div class="sub" id="days">â</div>
       <div class="resultGrid">
-        <div class="mini"><small>HORAS OPERACIONAIS NECESSÃRIAS</small><strong id="opHours">â</strong></div>
+        <div class="mini"><small>ÃREA DO TALHÃO</small><strong id="rArea">â</strong></div>
+        <div class="mini"><small>VMI</small><strong id="rVmi">â</strong></div>
+        <div class="mini"><small>MÃQUINAS</small><strong id="rMachines">â</strong></div>
+        <div class="mini"><small>BASE / MÃQUINA</small><strong id="rBase">â</strong></div>
+        <div class="mini"><small>PRODUTIVIDADE TOTAL</small><strong id="rProd">â</strong></div>
+        <div class="mini"><small>HORAS OPERACIONAIS</small><strong id="opHours">â</strong></div>
+        <div class="mini"><small>DIAS OPERACIONAIS</small><strong id="rDays">â</strong></div>
         <div class="mini"><small>ENTREGA PREVISTA</small><strong id="finish">â</strong></div>
       </div>
     </div>
@@ -188,6 +194,12 @@ document.addEventListener("DOMContentLoaded",()=>{
     start.setHours(hh||0,mm||0,0,0);
     const finish=new Date(start.getTime()+elapsed*3600000);
 
+    document.getElementById("rArea").textContent=fmt(area,1)+" ha";
+    document.getElementById("rVmi").textContent=fmt(selectedVMI,2);
+    document.getElementById("rMachines").textContent=machines;
+    document.getElementById("rBase").textContent=fmt(base,1)+" ha / 19,5 h";
+    document.getElementById("rProd").textContent=fmt(totalHaDay,2)+" ha/dia";
+    document.getElementById("rDays").textContent=fmt(days,2);
     document.getElementById("totalHours").textContent=fmt(elapsed,1)+" h corridas";
     document.getElementById("days").textContent=fmt(days,2)+" dias operacionais";
     document.getElementById("opHours").textContent=fmt(opHours,1)+" h";
