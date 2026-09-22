@@ -491,6 +491,10 @@ padding-right:10px;
 background:white;
 }
 
+.input input[type="time"]{
+padding-right:8px;
+}
+
 /* BOTÃO */
 
 .calculate{
@@ -723,8 +727,6 @@ padding-right:8px;
 </div>
 
 </div>
-
-<!-- BOTÃO DA TABELA -->
 
 <button
 class="menu"
@@ -1009,6 +1011,25 @@ inputmode="numeric"
 
 <div class="field">
 
+<label>HORA DA MEDIÇÃO</label>
+
+<div class="input">
+
+<b>◷</b>
+
+<input
+id="measurementTime"
+type="time"
+aria-label="Hora da medição"
+>
+
+</div>
+
+</div>
+
+
+<div class="field">
+
 <label>ÁRVORES POR HECTARE</label>
 
 <div class="input">
@@ -1088,6 +1109,19 @@ PRODUÇÃO TOTAL / DIA
 
 <strong id="totalProd">
 0,0 ha/dia
+</strong>
+
+</div>
+
+
+<div class="calc-mini">
+
+<small>
+PREVISÃO DE TÉRMINO
+</small>
+
+<strong id="finishTime">
+—
 </strong>
 
 </div>
@@ -1380,7 +1414,6 @@ localStorage.getItem("arvoresHora_"+key);
 if(saved!==null){
 
 input.value=saved;
-
 treeHourly[key]=parseFloat(saved);
 
 }
@@ -1578,6 +1611,21 @@ return;
 }
 
 
+/* HORA DA MEDIÇÃO */
+
+const measurementTime=
+document.getElementById("measurementTime").value;
+
+if(!measurementTime){
+
+if(showAlerts)
+alert("Informe a hora da medição.");
+
+return;
+
+}
+
+
 /* BUSCA NA TABELA */
 
 const arvoresHora=
@@ -1644,6 +1692,115 @@ const haDiaTotal=
 haDia*machines;
 
 
+/* =========================
+   PREVISÃO DE TÉRMINO
+========================= */
+
+/*
+As horas necessárias são horas produtivas.
+
+Exemplo:
+19,5 horas produtivas equivalem
+a aproximadamente 24 horas de relógio.
+
+Por isso:
+
+tempo de relógio =
+horas necessárias × (24 / 19,5)
+*/
+
+const timeParts=
+measurementTime.split(":");
+
+const measurementMinutes=
+parseInt(timeParts[0])*60+
+parseInt(timeParts[1]);
+
+
+const calendarMinutes=
+horasNecessarias*
+(24*60/hours);
+
+
+const finishTotalMinutes=
+measurementMinutes+
+calendarMinutes;
+
+
+const finishDayOffset=
+Math.floor(
+finishTotalMinutes/(24*60)
+);
+
+
+const finishMinutes=
+Math.floor(
+finishTotalMinutes%(24*60)
+);
+
+
+const finishHour=
+Math.floor(
+finishMinutes/60
+);
+
+
+const finishMinute=
+Math.round(
+finishMinutes%60
+);
+
+
+/*
+Se o arredondamento do minuto chegar a 60,
+ajusta para a próxima hora.
+*/
+
+let finalHour=finishHour;
+let finalMinute=finishMinute;
+
+if(finalMinute>=60){
+
+finalMinute=0;
+finalHour++;
+
+}
+
+
+if(finalHour>=24){
+
+finalHour=finalHour%24;
+
+}
+
+
+const finishText=
+String(finalHour).padStart(2,"0")
++":"
++String(finalMinute).padStart(2,"0");
+
+
+let finishLabel=finishText;
+
+
+if(finishDayOffset===1){
+
+finishLabel=
+finishText+" (+1 dia)";
+
+}
+
+else if(finishDayOffset>1){
+
+finishLabel=
+finishText+
+" (+"+
+finishDayOffset+
+" dias)";
+
+}
+
+
 /* PAINEL */
 
 document.getElementById("metricArea")
@@ -1678,6 +1835,11 @@ document.getElementById("totalProd")
 .textContent=
 formatNumber(haDiaTotal,2)
 +" ha/dia";
+
+
+document.getElementById("finishTime")
+.textContent=
+finishLabel;
 
 
 document.getElementById("resultMachines")
@@ -1853,7 +2015,8 @@ calculate(true);
 "area",
 "machines",
 "hours",
-"arvoresHa"
+"arvoresHa",
+"measurementTime"
 ].forEach(function(id){
 
 document.getElementById(id)
