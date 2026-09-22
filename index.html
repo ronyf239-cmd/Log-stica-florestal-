@@ -8,6 +8,7 @@
 <title>Floresta Performance</title>
 
 <style>
+
 *{
 box-sizing:border-box;
 }
@@ -272,7 +273,7 @@ border-color:var(--green2);
 color:white;
 }
 
-/* PRODUTIVIDADE */
+/* RESULTADO VMI */
 
 .prod-result{
 margin-top:11px;
@@ -317,6 +318,80 @@ border-radius:9px;
 white-space:nowrap;
 }
 
+/* TABELA */
+
+.tree-table-wrap{
+margin-top:5px;
+border:1px solid var(--line);
+border-radius:15px;
+overflow:hidden;
+background:var(--soft);
+}
+
+.tree-table-title{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:13px;
+background:#f0f5f2;
+border-bottom:1px solid var(--line);
+}
+
+.tree-table-title strong{
+font-size:11px;
+font-weight:900;
+}
+
+.tree-table-title span{
+font-size:9px;
+font-weight:800;
+color:var(--muted);
+}
+
+.tree-table{
+width:100%;
+border-collapse:collapse;
+}
+
+.tree-table th{
+padding:10px 12px;
+background:white;
+font-size:9px;
+font-weight:900;
+color:var(--muted);
+text-align:left;
+}
+
+.tree-table td{
+padding:6px 10px;
+border-top:1px solid var(--line);
+font-size:12px;
+font-weight:900;
+}
+
+.tree-vmi{
+color:var(--green);
+font-weight:900;
+}
+
+.tree-input{
+width:100%;
+height:38px;
+border:1px solid var(--line);
+border-radius:10px;
+background:white;
+outline:none;
+padding:0 10px;
+font-size:13px;
+font-weight:900;
+color:var(--text);
+}
+
+.tree-input:focus{
+border-color:var(--green2);
+box-shadow:0 0 0 2px rgba(35,116,71,.08);
+}
+
 /* CAMPOS */
 
 .fields{
@@ -331,10 +406,6 @@ font-size:9px;
 font-weight:900;
 color:var(--muted);
 margin:0 0 5px 2px;
-}
-
-.full{
-grid-column:1/-1;
 }
 
 .input{
@@ -517,7 +588,7 @@ line-height:1.45;
 color:var(--muted);
 }
 
-/* MENU INFERIOR */
+/* MENU */
 
 .bottom{
 position:fixed;
@@ -574,7 +645,14 @@ gap:5px;
 padding:9px 1px;
 }
 
+.tree-table td,
+.tree-table th{
+padding-left:8px;
+padding-right:8px;
 }
+
+}
+
 </style>
 </head>
 
@@ -605,7 +683,7 @@ padding:9px 1px;
 
 <h2>Planejamento do talhão</h2>
 
-<p>VMI • árvores/ha • máquinas • produtividade • tempo</p>
+<p>VMI • árvores/ha • árvores/hora • máquinas • tempo</p>
 
 </div>
 
@@ -623,46 +701,27 @@ padding:9px 1px;
 <div class="metrics">
 
 <div class="metric">
-
 <div class="metric-icon">🌲</div>
-
 <small>ÁREA DO TALHÃO</small>
-
 <strong id="metricArea">0,0 ha</strong>
-
 </div>
 
-
 <div class="metric">
-
 <div class="metric-icon">🚜</div>
-
 <small>MÁQUINAS</small>
-
 <strong id="metricMachines">1</strong>
-
 </div>
 
-
 <div class="metric">
-
 <div class="metric-icon">◈</div>
-
 <small>VMI</small>
-
 <strong id="metricVmi">0,24</strong>
-
 </div>
 
-
 <div class="metric">
-
 <div class="metric-icon">📈</div>
-
-<small>PRODUTIVIDADE</small>
-
-<strong id="metricProd">2,0 ha</strong>
-
+<small>ÁRVORES/HORA</small>
+<strong id="metricProd">—</strong>
 </div>
 
 </div>
@@ -692,32 +751,49 @@ padding:9px 1px;
 VMI selecionado: <strong>0,24</strong>
 </span>
 
-<span class="vmi-arrow">⌄</span>
+<span>⌄</span>
 
 </summary>
 
 
 <div class="vmi-options">
 
+<button type="button" class="vmi-btn" data-vmi="0.10">0,10</button>
+<button type="button" class="vmi-btn" data-vmi="0.11">0,11</button>
+<button type="button" class="vmi-btn" data-vmi="0.12">0,12</button>
+<button type="button" class="vmi-btn" data-vmi="0.13">0,13</button>
+
+<button type="button" class="vmi-btn" data-vmi="0.14">0,14</button>
 <button type="button" class="vmi-btn" data-vmi="0.15">0,15</button>
 <button type="button" class="vmi-btn" data-vmi="0.16">0,16</button>
 <button type="button" class="vmi-btn" data-vmi="0.17">0,17</button>
-<button type="button" class="vmi-btn" data-vmi="0.18">0,18</button>
 
+<button type="button" class="vmi-btn" data-vmi="0.18">0,18</button>
 <button type="button" class="vmi-btn" data-vmi="0.19">0,19</button>
 <button type="button" class="vmi-btn" data-vmi="0.20">0,20</button>
 <button type="button" class="vmi-btn" data-vmi="0.21">0,21</button>
-<button type="button" class="vmi-btn" data-vmi="0.22">0,22</button>
 
+<button type="button" class="vmi-btn" data-vmi="0.22">0,22</button>
 <button type="button" class="vmi-btn" data-vmi="0.23">0,23</button>
 <button type="button" class="vmi-btn active" data-vmi="0.24">0,24</button>
 <button type="button" class="vmi-btn" data-vmi="0.25">0,25</button>
-<button type="button" class="vmi-btn" data-vmi="0.26">0,26</button>
 
+<button type="button" class="vmi-btn" data-vmi="0.26">0,26</button>
 <button type="button" class="vmi-btn" data-vmi="0.27">0,27</button>
 <button type="button" class="vmi-btn" data-vmi="0.28">0,28</button>
 <button type="button" class="vmi-btn" data-vmi="0.29">0,29</button>
+
 <button type="button" class="vmi-btn" data-vmi="0.30">0,30</button>
+<button type="button" class="vmi-btn" data-vmi="0.31">0,31</button>
+<button type="button" class="vmi-btn" data-vmi="0.32">0,32</button>
+<button type="button" class="vmi-btn" data-vmi="0.33">0,33</button>
+
+<button type="button" class="vmi-btn" data-vmi="0.34">0,34</button>
+<button type="button" class="vmi-btn" data-vmi="0.35">0,35</button>
+<button type="button" class="vmi-btn" data-vmi="0.36">0,36</button>
+<button type="button" class="vmi-btn" data-vmi="0.37">0,37</button>
+
+<button type="button" class="vmi-btn" data-vmi="0.38">0,38</button>
 
 </div>
 
@@ -728,17 +804,65 @@ VMI selecionado: <strong>0,24</strong>
 
 <div>
 
-<small>PRODUTIVIDADE BASE</small>
+<small>ÁRVORES/HORA DO VMI</small>
 
-<strong id="prodText">2,0 ha / 19,5 h</strong>
+<strong id="prodText">Não cadastrado</strong>
 
-<span id="rangeText">VMI 0,21 – 0,30</span>
+<span id="rangeText">Digite o valor na tabela</span>
 
 </div>
 
 <div class="status">
 ATIVO
 </div>
+
+</div>
+
+</section>
+
+
+<!-- TABELA -->
+
+<section class="card">
+
+<div class="card-head">
+
+<div class="card-icon">🌲</div>
+
+<div>
+<h3>Árvores por hora</h3>
+<p>Defina a produção de cada VMI</p>
+</div>
+
+</div>
+
+
+<div class="tree-table-wrap">
+
+<div class="tree-table-title">
+
+<strong>TABELA DE PRODUTIVIDADE</strong>
+
+<span>Por máquina</span>
+
+</div>
+
+
+<table class="tree-table">
+
+<thead>
+
+<tr>
+<th>VMI</th>
+<th>ÁRVORES/HORA</th>
+</tr>
+
+</thead>
+
+<tbody id="treeTableBody">
+</tbody>
+
+</table>
 
 </div>
 
@@ -867,7 +991,7 @@ CALCULAR PLANEJAMENTO DO TALHÃO
 <div class="calc-result" id="calcResult">
 
 <div class="calc-title">
-PREVISÃO DE CONCLUSÃO
+TEMPO NECESSÁRIO
 </div>
 
 <div class="calc-big" id="totalHours">
@@ -884,11 +1008,11 @@ PREVISÃO DE CONCLUSÃO
 <div class="calc-mini">
 
 <small>
-PRODUTIVIDADE TOTAL
+PRODUÇÃO TOTAL / DIA
 </small>
 
 <strong id="totalProd">
-0,0 ha / 19,5 h
+0,0 ha/dia
 </strong>
 
 </div>
@@ -977,9 +1101,9 @@ MÁQUINAS
 
 <div class="flow-icon">📈</div>
 
-<small>BASE</small>
+<small>ÁRVORES/HORA</small>
 
-<strong id="flowProd">2,0 ha</strong>
+<strong id="flowProd">—</strong>
 
 </div>
 
@@ -1006,14 +1130,14 @@ MÁQUINAS
 
 <div>
 
-<small>PRODUTIVIDADE TOTAL</small>
+<small>PRODUÇÃO TOTAL</small>
 
 <strong id="flowTotal">
-2,0 ha
+0,0 ha
 </strong>
 
 <span>
-por 19,5 horas
+por dia operacional
 </span>
 
 </div>
@@ -1042,10 +1166,11 @@ CÁLCULO
 <h4>Motor de produtividade</h4>
 
 <p>
-O VMI define a produtividade em hectares.
-A quantidade de árvores por hectare é
-informada pelo operador e usada como base
-para converter a produtividade em árvores/hora.
+O VMI selecionado busca diretamente na tabela
+a quantidade de árvores por hora daquela máquina.
+As árvores por hectare são informadas pelo operador
+e utilizadas para calcular o total de árvores e o
+tempo necessário para concluir o talhão.
 </p>
 
 </div>
@@ -1091,16 +1216,18 @@ para converter a produtividade em árvores/hora.
 
 <script>
 
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded",function(){
 
-let selectedVMI = 0.24;
+let selectedVMI=0.24;
+
+const treeHourly={};
 
 
-/* ================================
+/* =========================
    FORMATAÇÃO
-================================ */
+========================= */
 
-function formatNumber(number, decimals){
+function formatNumber(number,decimals){
 
 return Number(number)
 .toFixed(decimals)
@@ -1109,125 +1236,266 @@ return Number(number)
 }
 
 
-/* ================================
-   PRODUTIVIDADE POR VMI
-================================ */
+/* =========================
+   CHAVE DO VMI
+========================= */
 
-function getProductivity(vmi){
+function vmiKey(vmi){
 
-if(vmi >= 0.15 && vmi <= 0.20){
-
-return {
-prod:1.8,
-range:"VMI 0,15 – 0,20"
-};
-
-}
-
-if(vmi >= 0.21 && vmi <= 0.30){
-
-return {
-prod:2.0,
-range:"VMI 0,21 – 0,30"
-};
-
-}
-
-return null;
+return Number(vmi).toFixed(2);
 
 }
 
 
-/* ================================
+/* =========================
+   TABELA
+========================= */
+
+function buildTreeTable(){
+
+const body=document.getElementById("treeTableBody");
+
+body.innerHTML="";
+
+for(let i=10;i<=38;i++){
+
+const vmi=(i/100).toFixed(2);
+
+const row=document.createElement("tr");
+
+row.innerHTML=`
+
+<td class="tree-vmi">
+${vmi.replace(".",",")}
+</td>
+
+<td>
+
+<input
+class="tree-input"
+type="number"
+min="0"
+step="1"
+inputmode="numeric"
+data-vmi="${vmi}"
+placeholder="Digite"
+>
+
+</td>
+
+`;
+
+body.appendChild(row);
+
+}
+
+
+const inputs=
+body.querySelectorAll(".tree-input");
+
+
+inputs.forEach(function(input){
+
+const key=vmiKey(input.dataset.vmi);
+
+const saved=
+localStorage.getItem("arvoresHora_"+key);
+
+
+if(saved!==null){
+
+input.value=saved;
+
+treeHourly[key]=parseFloat(saved);
+
+}
+
+
+input.addEventListener("input",function(){
+
+const value=parseFloat(this.value);
+
+const key=vmiKey(this.dataset.vmi);
+
+
+if(Number.isFinite(value) && value>=0){
+
+treeHourly[key]=value;
+
+localStorage.setItem(
+"arvoresHora_"+key,
+String(value)
+);
+
+}else{
+
+delete treeHourly[key];
+
+localStorage.removeItem(
+"arvoresHora_"+key
+);
+
+}
+
+
+updateVMI();
+
+});
+
+});
+
+}
+
+
+/* =========================
+   BUSCA ÁRVORES/HORA
+========================= */
+
+function getTreesPerHour(vmi){
+
+const value=
+treeHourly[vmiKey(vmi)];
+
+return Number.isFinite(value)
+? value
+: null;
+
+}
+
+
+/* =========================
    ATUALIZA VMI
-================================ */
+========================= */
 
 function updateVMI(){
 
-let data = getProductivity(selectedVMI);
+const treesHour=
+getTreesPerHour(selectedVMI);
 
-document.getElementById("metricVmi").textContent =
+
+document.getElementById("metricVmi")
+.textContent=
 formatNumber(selectedVMI,2);
 
-document.getElementById("flowVmi").textContent =
+
+document.getElementById("flowVmi")
+.textContent=
 formatNumber(selectedVMI,2);
 
 
-if(!data){
+if(treesHour===null){
 
-document.getElementById("prodText").textContent =
+document.getElementById("prodText")
+.textContent=
 "Não cadastrado";
 
-document.getElementById("rangeText").textContent =
-"VMI sem faixa";
+document.getElementById("rangeText")
+.textContent=
+"Digite o valor na tabela";
+
+document.getElementById("metricProd")
+.textContent=
+"—";
+
+document.getElementById("flowProd")
+.textContent=
+"—";
 
 return;
 
 }
 
 
-document.getElementById("prodText").textContent =
-formatNumber(data.prod,1) + " ha / 19,5 h";
+document.getElementById("prodText")
+.textContent=
+formatNumber(treesHour,0)
++" árvores/h";
 
-document.getElementById("rangeText").textContent =
-data.range;
 
-document.getElementById("metricProd").textContent =
-formatNumber(data.prod,1) + " ha";
+document.getElementById("rangeText")
+.textContent=
+"VMI "+formatNumber(selectedVMI,2);
 
-document.getElementById("flowProd").textContent =
-formatNumber(data.prod,1) + " ha";
+
+document.getElementById("metricProd")
+.textContent=
+formatNumber(treesHour,0)
++" árvores/h";
+
+
+document.getElementById("flowProd")
+.textContent=
+formatNumber(treesHour,0)
++" árvores/h";
 
 }
 
 
-/* ================================
+/* =========================
    CÁLCULO PRINCIPAL
-================================ */
+========================= */
 
-function calculate(){
+function calculate(showAlerts=true){
 
-let area =
-parseFloat(document.getElementById("area").value);
+const area=
+parseFloat(
+document.getElementById("area").value
+);
 
-let machines =
-parseInt(document.getElementById("machines").value);
 
-let hours =
-parseFloat(document.getElementById("hours").value);
+const machines=
+parseInt(
+document.getElementById("machines").value
+);
 
-let arvoresHa =
-parseFloat(document.getElementById("arvoresHa").value);
+
+const hours=
+parseFloat(
+document.getElementById("hours").value
+);
+
+
+const arvoresHa=
+parseFloat(
+document.getElementById("arvoresHa").value
+);
 
 
 /* VALIDAÇÕES */
 
-if(!Number.isFinite(area) || area <= 0){
+if(!Number.isFinite(area)||area<=0){
 
+if(showAlerts)
 alert("Informe a área do talhão.");
 
 return;
 
 }
 
-if(!Number.isFinite(machines) || machines < 1){
 
+if(!Number.isFinite(machines)||machines<1){
+
+if(showAlerts)
 alert("Informe a quantidade de máquinas.");
 
 return;
 
 }
 
-if(!Number.isFinite(hours) || hours <= 0){
 
+if(!Number.isFinite(hours)||hours<=0){
+
+if(showAlerts)
 alert("Informe as horas operacionais.");
 
 return;
 
 }
 
-if(!Number.isFinite(arvoresHa) || arvoresHa <= 0){
 
+if(!Number.isFinite(arvoresHa)||arvoresHa<=0){
+
+if(showAlerts)
 alert("Informe a quantidade de árvores por hectare.");
 
 return;
@@ -1235,213 +1503,161 @@ return;
 }
 
 
-/* PRODUTIVIDADE DO VMI */
+/* BUSCA NA TABELA */
 
-let data =
-getProductivity(selectedVMI);
+const arvoresHora=
+getTreesPerHour(selectedVMI);
 
-if(!data){
 
-alert("VMI sem produtividade cadastrada.");
+if(arvoresHora===null){
+
+if(showAlerts){
+
+alert(
+"Informe as árvores por hora do VMI selecionado na tabela."
+);
+
+}
 
 return;
 
 }
 
 
-/*
-=========================================
-BASE DO CÁLCULO
+/* =========================
+   ÁRVORES TOTAIS
+========================= */
 
-A produtividade cadastrada é:
-
-1,8 ha / 19,5 h
-ou
-2,0 ha / 19,5 h
-
-A quantidade de árvores/ha informada
-é usada para transformar hectares em árvores.
-
-NÃO EXISTE MAIS BASE FIXA DE 1.800.
-=========================================
-*/
+const totalArvores=
+area*arvoresHa;
 
 
-/*
-ÁRVORES/HORA POR MÁQUINA
+/* =========================
+   PRODUÇÃO/HORA TOTAL
+========================= */
 
-Exemplo:
-
-2 ha / 19,5 h
-×
-1.300 árvores/ha
-
-=
-133,33 árvores/h
-*/
-
-let arvoresHora =
-(data.prod / 19.5) * arvoresHa;
+const producaoHoraTotal=
+arvoresHora*machines;
 
 
-/*
-ÁRVORES POR DIA POR MÁQUINA
-*/
+/* =========================
+   HORAS NECESSÁRIAS
+========================= */
 
-let arvoresDia =
-arvoresHora * hours;
-
-
-/*
-HECTARES POR HORA
-*/
-
-let haHora =
-arvoresHora / arvoresHa;
+const horasNecessarias=
+totalArvores/
+producaoHoraTotal;
 
 
-/*
-HECTARES POR DIA POR MÁQUINA
-*/
+/* =========================
+   DIAS OPERACIONAIS
+========================= */
 
-let haDia =
-arvoresDia / arvoresHa;
-
-
-/*
-HECTARES TOTAIS POR DIA
-*/
-
-let haDiaTotal =
-haDia * machines;
+const diasNecessarios=
+horasNecessarias/
+hours;
 
 
-/*
-ÁRVORES TOTAIS POR DIA
-*/
+/* =========================
+   HECTARES/HORA
+========================= */
 
-let arvoresDiaTotal =
-arvoresDia * machines;
-
-
-/*
-TOTAL DE ÁRVORES DO TALHÃO
-
-Área × árvores/ha
-*/
-
-let totalArvores =
-area * arvoresHa;
+const haHora=
+arvoresHora/
+arvoresHa;
 
 
-/*
-HORAS NECESSÁRIAS
+/* =========================
+   HECTARES/DIA/MÁQUINA
+========================= */
 
-Total de árvores
-÷
-produção de árvores/h de todas as máquinas
-*/
-
-let horasNecessarias =
-totalArvores /
-(arvoresHora * machines);
+const haDia=
+haHora*hours;
 
 
-/*
-DIAS NECESSÁRIOS
+/* =========================
+   HECTARES/DIA TOTAL
+========================= */
 
-As horas necessárias são divididas
-pelas horas operacionais disponíveis
-por dia.
-*/
-
-let diasNecessarios =
-horasNecessarias / hours;
+const haDiaTotal=
+haDia*machines;
 
 
-/*
-PERCENTUAL DA ÁREA PRODUZIDA POR DIA
-*/
+/* =========================
+   PAINEL
+========================= */
 
-let percentual = 0;
-
-if(area > 0){
-
-percentual =
-(haDiaTotal / area) * 100;
-
-}
+document.getElementById("metricArea")
+.textContent=
+formatNumber(area,1)+" ha";
 
 
-/* ================================
-   ATUALIZA PAINEL
-================================ */
-
-document.getElementById("metricArea").textContent =
-formatNumber(area,1) + " ha";
-
-document.getElementById("metricMachines").textContent =
-machines;
-
-document.getElementById("flowMachines").textContent =
+document.getElementById("metricMachines")
+.textContent=
 machines;
 
 
-/* ================================
+document.getElementById("flowMachines")
+.textContent=
+machines;
+
+
+/* =========================
    RESULTADO
-================================ */
+========================= */
 
-document.getElementById("totalHours").textContent =
-formatNumber(horasNecessarias,1) + " h";
-
-document.getElementById("daysText").textContent =
-formatNumber(diasNecessarios,2) +
-" dias operacionais";
+document.getElementById("totalHours")
+.textContent=
+formatNumber(horasNecessarias,1)+" h";
 
 
-document.getElementById("totalProd").textContent =
-formatNumber(haDiaTotal,2) +
-" ha/dia";
+document.getElementById("daysText")
+.textContent=
+formatNumber(diasNecessarios,2)
++" dias operacionais";
 
 
-document.getElementById("resultMachines").textContent =
-machines === 1
-? "1 máquina"
-: machines + " máquinas";
+document.getElementById("totalProd")
+.textContent=
+formatNumber(haDiaTotal,2)
++" ha/dia";
 
 
-document.getElementById("resultArvoresHa").textContent =
+document.getElementById("resultMachines")
+.textContent=
+machines===1
+?"1 máquina"
+:machines+" máquinas";
+
+
+document.getElementById("resultArvoresHa")
+.textContent=
 formatNumber(arvoresHa,0);
 
 
-document.getElementById("resultArvoresHora").textContent =
-formatNumber(arvoresHora,1);
+document.getElementById("resultArvoresHora")
+.textContent=
+formatNumber(arvoresHora,0);
 
 
-/*
-ATUALIZA MOTOR
-*/
-
-document.getElementById("flowTotal").textContent =
-formatNumber(haDiaTotal,2) +
-" ha";
+document.getElementById("flowTotal")
+.textContent=
+formatNumber(haDiaTotal,2)
++" ha";
 
 
-/*
-MOSTRA RESULTADO
-*/
-
-document.getElementById("calcResult").style.display =
+document.getElementById("calcResult")
+.style.display=
 "block";
 
 }
 
 
-/* ================================
+/* =========================
    BOTÕES VMI
-================================ */
+========================= */
 
-let vmiButtons =
+const vmiButtons=
 document.querySelectorAll(".vmi-btn");
 
 
@@ -1449,8 +1665,10 @@ vmiButtons.forEach(function(button){
 
 button.addEventListener("click",function(){
 
-selectedVMI =
-parseFloat(this.getAttribute("data-vmi"));
+selectedVMI=
+parseFloat(
+this.getAttribute("data-vmi")
+);
 
 
 vmiButtons.forEach(function(btn){
@@ -1463,14 +1681,15 @@ btn.classList.remove("active");
 this.classList.add("active");
 
 
-document.getElementById("vmiSummary").innerHTML =
-"VMI selecionado: <strong>" +
-this.textContent +
+document.getElementById("vmiSummary")
+.innerHTML=
+"VMI selecionado: <strong>"
++this.textContent+
 "</strong>";
 
 
-document.getElementById("vmiSelector").open =
-false;
+document.getElementById("vmiSelector")
+.open=false;
 
 
 updateVMI();
@@ -1480,65 +1699,48 @@ updateVMI();
 });
 
 
-/* ================================
+/* =========================
    BOTÃO CALCULAR
-================================ */
+========================= */
 
 document.getElementById("calc")
 .addEventListener("click",function(){
 
-calculate();
+calculate(true);
 
 });
 
 
-/* ================================
-   ATUALIZA AO DIGITAR
-================================ */
+/* =========================
+   ATUALIZAÇÃO AUTOMÁTICA
+========================= */
 
-document.getElementById("area")
+[
+"area",
+"machines",
+"hours",
+"arvoresHa"
+].forEach(function(id){
+
+document.getElementById(id)
 .addEventListener("input",function(){
 
 if(this.value){
-calculate();
+
+calculate(false);
+
 }
 
 });
 
-
-document.getElementById("machines")
-.addEventListener("input",function(){
-
-if(this.value){
-calculate();
-}
-
 });
 
 
-document.getElementById("hours")
-.addEventListener("input",function(){
+/* =========================
+   INICIALIZAÇÃO
+========================= */
 
-if(this.value){
-calculate();
-}
-
-});
-
-
-document.getElementById("arvoresHa")
-.addEventListener("input",function(){
-
-if(this.value){
-calculate();
-}
-
-});
-
-
-/* ================================
-   PRIMEIRA EXECUÇÃO
-================================ */
+buildTreeTable();
 
 updateVMI();
 
