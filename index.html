@@ -91,6 +91,7 @@ background:rgba(255,255,255,.1);
 color:white;
 border-radius:13px;
 font-size:20px;
+cursor:pointer;
 }
 
 .greeting{
@@ -392,6 +393,56 @@ border-color:var(--green2);
 box-shadow:0 0 0 2px rgba(35,116,71,.08);
 }
 
+/* TABELA OCULTA / JANELA */
+
+.tree-table-card{
+display:none;
+}
+
+.tree-overlay{
+position:fixed;
+inset:0;
+background:rgba(8,30,20,.62);
+z-index:100;
+padding:18px 14px 85px;
+overflow-y:auto;
+}
+
+.tree-overlay .tree-table-card{
+display:block;
+max-width:760px;
+margin:0 auto;
+}
+
+.tree-overlay-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+max-width:760px;
+margin:0 auto 10px;
+color:white;
+}
+
+.tree-overlay-head strong{
+font-size:13px;
+font-weight:900;
+}
+
+.tree-close{
+width:42px;
+height:42px;
+border:1px solid rgba(255,255,255,.25);
+background:rgba(255,255,255,.12);
+color:white;
+border-radius:13px;
+font-size:25px;
+cursor:pointer;
+}
+
+.tree-close:active{
+transform:scale(.95);
+}
+
 /* CAMPOS */
 
 .fields{
@@ -588,7 +639,7 @@ line-height:1.45;
 color:var(--muted);
 }
 
-/* MENU */
+/* MENU INFERIOR */
 
 .bottom{
 position:fixed;
@@ -673,7 +724,16 @@ padding-right:8px;
 
 </div>
 
-<button class="menu" type="button">☰</button>
+<!-- BOTÃO DA TABELA -->
+
+<button
+class="menu"
+id="openTreeTable"
+type="button"
+aria-label="Abrir tabela de árvores por hora"
+>
+☰
+</button>
 
 </div>
 
@@ -823,7 +883,22 @@ ATIVO
 
 <!-- TABELA -->
 
-<section class="card">
+<section class="card tree-table-card" id="treeTableCard">
+
+<div class="tree-overlay-head">
+
+<strong>CADASTRO DE ÁRVORES/HORA</strong>
+
+<button
+type="button"
+class="tree-close"
+id="treeClose"
+aria-label="Fechar tabela"
+>
+×
+</button>
+
+</div>
 
 <div class="card-head">
 
@@ -1524,68 +1599,52 @@ return;
 }
 
 
-/* =========================
-   ÁRVORES TOTAIS
-========================= */
+/* ÁRVORES TOTAIS */
 
 const totalArvores=
 area*arvoresHa;
 
 
-/* =========================
-   PRODUÇÃO/HORA TOTAL
-========================= */
+/* PRODUÇÃO/HORA TOTAL */
 
 const producaoHoraTotal=
 arvoresHora*machines;
 
 
-/* =========================
-   HORAS NECESSÁRIAS
-========================= */
+/* HORAS NECESSÁRIAS */
 
 const horasNecessarias=
 totalArvores/
 producaoHoraTotal;
 
 
-/* =========================
-   DIAS OPERACIONAIS
-========================= */
+/* DIAS OPERACIONAIS */
 
 const diasNecessarios=
 horasNecessarias/
 hours;
 
 
-/* =========================
-   HECTARES/HORA
-========================= */
+/* HECTARES/HORA */
 
 const haHora=
 arvoresHora/
 arvoresHa;
 
 
-/* =========================
-   HECTARES/DIA/MÁQUINA
-========================= */
+/* HECTARES/DIA/MÁQUINA */
 
 const haDia=
 haHora*hours;
 
 
-/* =========================
-   HECTARES/DIA TOTAL
-========================= */
+/* HECTARES/DIA TOTAL */
 
 const haDiaTotal=
 haDia*machines;
 
 
-/* =========================
-   PAINEL
-========================= */
+/* PAINEL */
 
 document.getElementById("metricArea")
 .textContent=
@@ -1602,9 +1661,7 @@ document.getElementById("flowMachines")
 machines;
 
 
-/* =========================
-   RESULTADO
-========================= */
+/* RESULTADO */
 
 document.getElementById("totalHours")
 .textContent=
@@ -1697,6 +1754,83 @@ updateVMI();
 });
 
 });
+
+
+/* =========================
+   MENU DA TABELA
+========================= */
+
+const treeCard=
+document.getElementById("treeTableCard");
+
+const openTreeTable=
+document.getElementById("openTreeTable");
+
+const treeClose=
+document.getElementById("treeClose");
+
+
+const overlay=
+document.createElement("div");
+
+overlay.className=
+"tree-overlay";
+
+overlay.style.display=
+"none";
+
+
+document.body.appendChild(overlay);
+
+overlay.appendChild(treeCard);
+
+
+function openTable(){
+
+overlay.style.display=
+"block";
+
+document.body.style.overflow=
+"hidden";
+
+}
+
+
+function closeTable(){
+
+overlay.style.display=
+"none";
+
+document.body.style.overflow=
+"";
+
+}
+
+
+openTreeTable.addEventListener(
+"click",
+openTable
+);
+
+
+treeClose.addEventListener(
+"click",
+closeTable
+);
+
+
+overlay.addEventListener(
+"click",
+function(event){
+
+if(event.target===overlay){
+
+closeTable();
+
+}
+
+}
+);
 
 
 /* =========================
