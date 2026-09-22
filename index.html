@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Floresta Performance</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -13,12 +15,12 @@
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    background: #f2f4f7;
+    background: #f3f4f6;
     color: #1f2937;
 }
 
 header {
-    background: #166534;
+    background: #176b36;
     color: white;
     padding: 18px;
     text-align: center;
@@ -35,7 +37,7 @@ header p {
 }
 
 .container {
-    width: min(100%, 900px);
+    max-width: 950px;
     margin: auto;
     padding: 18px;
 }
@@ -43,15 +45,14 @@ header p {
 .card {
     background: white;
     border-radius: 14px;
-    padding: 18px;
+    padding: 20px;
     margin-bottom: 18px;
     box-shadow: 0 2px 8px rgba(0,0,0,.08);
 }
 
 .card h2 {
     margin-top: 0;
-    color: #166534;
-    font-size: 20px;
+    color: #176b36;
 }
 
 .grid {
@@ -60,18 +61,18 @@ header p {
     gap: 14px;
 }
 
-.field {
+.campo {
     display: flex;
     flex-direction: column;
 }
 
-.field label {
+.campo label {
     font-weight: bold;
     margin-bottom: 6px;
     font-size: 14px;
 }
 
-.field input {
+.campo input {
     width: 100%;
     padding: 13px;
     border: 1px solid #cbd5e1;
@@ -79,447 +80,920 @@ header p {
     font-size: 16px;
 }
 
-.field input:focus {
+.campo input:focus {
     outline: none;
-    border-color: #166534;
+    border-color: #176b36;
 }
 
-.full {
-    grid-column: 1 / -1;
-}
-
-button {
+.botao {
     width: 100%;
-    border: 0;
+    margin-top: 18px;
     padding: 15px;
+    border: none;
     border-radius: 9px;
-    background: #166534;
+    background: #176b36;
     color: white;
     font-size: 17px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 15px;
 }
 
-button:hover {
-    background: #14532d;
+.botao:hover {
+    background: #12552a;
 }
 
-.resultado {
+.resultados {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
 }
 
-.resultado-box {
+.resultado {
     background: #f0fdf4;
     border: 1px solid #bbf7d0;
     border-radius: 10px;
     padding: 15px;
 }
 
-.resultado-box span {
+.resultado span {
     display: block;
-    font-size: 13px;
     color: #64748b;
-    margin-bottom: 6px;
+    font-size: 13px;
+    margin-bottom: 7px;
 }
 
-.resultado-box strong {
+.resultado strong {
     font-size: 22px;
-    color: #166534;
+    color: #176b36;
 }
 
-.destaque {
+.principal {
     grid-column: 1 / -1;
-    background: #166534;
-    color: white;
+    background: #176b36;
 }
 
-.destaque span {
+.principal span {
     color: #dcfce7;
 }
 
-.destaque strong {
+.principal strong {
     color: white;
-    font-size: 28px;
-}
-
-.formula {
-    background: #f8fafc;
-    border-left: 4px solid #166534;
-    padding: 14px;
-    margin-top: 15px;
-    border-radius: 5px;
-    line-height: 1.7;
-}
-
-.erro {
-    color: #b91c1c;
-    font-weight: bold;
-    margin-top: 10px;
+    font-size: 29px;
 }
 
 .info {
     background: #eff6ff;
     border-left: 4px solid #2563eb;
     padding: 13px;
+    margin-bottom: 16px;
     border-radius: 5px;
-    margin-bottom: 15px;
     font-size: 14px;
 }
 
-@media (max-width: 600px) {
+.erro {
+    margin-top: 12px;
+    padding: 12px;
+    background: #fee2e2;
+    color: #991b1b;
+    border-radius: 7px;
+    font-weight: bold;
+}
 
-    .grid,
-    .resultado {
+.formula {
+    margin-top: 18px;
+    padding: 15px;
+    background: #f8fafc;
+    border-left: 4px solid #176b36;
+    line-height: 1.7;
+}
+
+@media (max-width: 650px) {
+
+    .grid {
         grid-template-columns: 1fr;
     }
 
-    .full,
-    .destaque {
+    .resultados {
+        grid-template-columns: 1fr;
+    }
+
+    .principal {
         grid-column: auto;
     }
 
-    header h1 {
-        font-size: 21px;
-    }
 }
+
 </style>
 </head>
 
 <body>
 
 <header>
+
     <h1>Floresta Performance</h1>
-    <p>Calculadora de produtividade operacional</p>
+
+    <p>
+        Cálculo de produtividade florestal
+    </p>
+
 </header>
+
 
 <div class="container">
 
-    <div class="card">
 
-        <h2>Dados do VMI</h2>
+<!-- =====================================================
+     ENTRADAS
+====================================================== -->
 
-        <div class="info">
-            <strong>Importante:</strong>
-            informe manualmente a quantidade de árvores/hora que a máquina está produzindo no VMI.
-            O aplicativo não utiliza mais uma base fixa de 1.800 árvores/ha.
-        </div>
+<div class="card">
 
-        <div class="grid">
+    <h2>Dados da operação</h2>
 
-            <div class="field">
-                <label for="arvoresHora">
-                    Árvores por hora (VMI)
-                </label>
+    <div class="info">
 
-                <input
-                    type="number"
-                    id="arvoresHora"
-                    min="0"
-                    step="0.01"
-                    placeholder="Ex.: 100"
-                >
-            </div>
+        <strong>Árvores/hora:</strong>
+        informe o valor obtido no VMI.
 
-            <div class="field">
-                <label for="arvoresHa">
-                    Árvores por hectare
-                </label>
+        <br><br>
 
-                <input
-                    type="number"
-                    id="arvoresHa"
-                    min="0"
-                    step="0.01"
-                    placeholder="Ex.: 1250"
-                >
-            </div>
+        <strong>Árvores/ha:</strong>
+        informe a quantidade real de árvores existente por hectare.
 
-            <div class="field">
-                <label for="area">
-                    Área (ha)
-                </label>
+        <br><br>
 
-                <input
-                    type="number"
-                    id="area"
-                    min="0"
-                    step="0.01"
-                    placeholder="Ex.: 13.8"
-                >
-            </div>
-
-            <div class="field">
-                <label for="horasDisponiveis">
-                    Horas disponíveis
-                </label>
-
-                <input
-                    type="number"
-                    id="horasDisponiveis"
-                    min="0"
-                    step="0.01"
-                    placeholder="Ex.: 19.5"
-                >
-            </div>
-
-        </div>
-
-        <button onclick="calcular()">
-            CALCULAR
-        </button>
-
-        <div id="mensagem"></div>
+        O cálculo NÃO utiliza mais uma base fixa de 1.800 árvores/ha.
 
     </div>
 
 
-    <div class="card">
+    <div class="grid">
 
-        <h2>Resultado dos cálculos</h2>
+
+        <!-- ÁRVORES POR HORA -->
+
+        <div class="campo">
+
+            <label for="arvoresHora">
+
+                Árvores por hora — VMI
+
+            </label>
+
+            <input
+                type="number"
+                id="arvoresHora"
+                placeholder="Ex.: 110"
+                min="0"
+                step="0.01"
+            >
+
+        </div>
+
+
+        <!-- ÁRVORES POR HECTARE -->
+
+        <div class="campo">
+
+            <label for="arvoresHa">
+
+                Árvores por hectare
+
+            </label>
+
+            <input
+                type="number"
+                id="arvoresHa"
+                placeholder="Ex.: 1300"
+                min="0"
+                step="0.01"
+            >
+
+        </div>
+
+
+        <!-- ÁREA -->
+
+        <div class="campo">
+
+            <label for="area">
+
+                Área — hectares
+
+            </label>
+
+            <input
+                type="number"
+                id="area"
+                placeholder="Ex.: 13,8"
+                min="0"
+                step="0.01"
+            >
+
+        </div>
+
+
+        <!-- QUANTIDADE DE MÁQUINAS -->
+
+        <div class="campo">
+
+            <label for="maquinas">
+
+                Quantidade de máquinas
+
+            </label>
+
+            <input
+                type="number"
+                id="maquinas"
+                placeholder="Ex.: 6"
+                min="0"
+                step="1"
+            >
+
+        </div>
+
+
+        <!-- HORAS DISPONÍVEIS -->
+
+        <div class="campo">
+
+            <label for="horas">
+
+                Horas operacionais por dia
+
+            </label>
+
+            <input
+                type="number"
+                id="horas"
+                value="19.5"
+                min="0"
+                step="0.1"
+            >
+
+        </div>
+
+
+    </div>
+
+
+    <button
+        class="botao"
+        onclick="calcular()"
+    >
+
+        CALCULAR
+
+    </button>
+
+
+    <div id="mensagem"></div>
+
+</div>
+
+
+
+<!-- =====================================================
+     RESULTADOS
+====================================================== -->
+
+<div class="card">
+
+    <h2>Resultados dos cálculos</h2>
+
+
+    <div class="resultados">
+
+
+        <!-- HA/H -->
+
+        <div class="resultado principal">
+
+            <span>
+
+                Produção por máquina
+
+            </span>
+
+            <strong id="haHora">
+
+                0,000 ha/h
+
+            </strong>
+
+        </div>
+
+
+        <!-- HA/DIA -->
 
         <div class="resultado">
 
-            <div class="resultado-box destaque">
-                <span>Produção estimada</span>
-                <strong id="haHora">0,000 ha/h</strong>
-            </div>
+            <span>
 
-            <div class="resultado-box">
-                <span>Árvores necessárias para a área</span>
-                <strong id="totalArvores">0</strong>
-            </div>
+                Hectares por máquina/dia
 
-            <div class="resultado-box">
-                <span>Horas necessárias</span>
-                <strong id="horasNecessarias">0,00 h</strong>
-            </div>
+            </span>
 
-            <div class="resultado-box">
-                <span>Produção no período informado</span>
-                <strong id="producaoPeriodo">0,00 ha</strong>
-            </div>
+            <strong id="haDia">
 
-            <div class="resultado-box">
-                <span>Árvores cortadas no período</span>
-                <strong id="arvoresPeriodo">0</strong>
-            </div>
+                0,00 ha
 
-            <div class="resultado-box">
-                <span>Percentual da área produzida</span>
-                <strong id="percentual">0,00%</strong>
-            </div>
+            </strong>
 
         </div>
 
 
-        <div class="formula">
+        <!-- TOTAL HA/DIA -->
 
-            <strong>Fórmula utilizada:</strong><br>
+        <div class="resultado">
 
-            HA/h = Árvores/h ÷ Árvores/ha
+            <span>
 
-            <br><br>
+                Hectares totais por dia
 
-            <strong>Horas necessárias:</strong><br>
+            </span>
 
-            Horas = (Área × Árvores/ha) ÷ Árvores/h
+            <strong id="haDiaTotal">
 
-            <br><br>
+                0,00 ha
 
-            <strong>Total de árvores:</strong><br>
-
-            Árvores = Área × Árvores/ha
+            </strong>
 
         </div>
+
+
+        <!-- ÁRVORES/DIA/MÁQUINA -->
+
+        <div class="resultado">
+
+            <span>
+
+                Árvores/dia por máquina
+
+            </span>
+
+            <strong id="arvoresDia">
+
+                0
+
+            </strong>
+
+        </div>
+
+
+        <!-- ÁRVORES TOTAL/DIA -->
+
+        <div class="resultado">
+
+            <span>
+
+                Árvores totais/dia
+
+            </span>
+
+            <strong id="arvoresDiaTotal">
+
+                0
+
+            </strong>
+
+        </div>
+
+
+        <!-- TOTAL DE ÁRVORES DA ÁREA -->
+
+        <div class="resultado">
+
+            <span>
+
+                Árvores na área
+
+            </span>
+
+            <strong id="totalArvores">
+
+                0
+
+            </strong>
+
+        </div>
+
+
+        <!-- HORAS -->
+
+        <div class="resultado">
+
+            <span>
+
+                Horas necessárias
+
+            </span>
+
+            <strong id="horasNecessarias">
+
+                0,00 h
+
+            </strong>
+
+        </div>
+
+
+        <!-- DIAS -->
+
+        <div class="resultado">
+
+            <span>
+
+                Dias necessários
+
+            </span>
+
+            <strong id="diasNecessarios">
+
+                0,00 dias
+
+            </strong>
+
+        </div>
+
+
+        <!-- PERCENTUAL -->
+
+        <div class="resultado">
+
+            <span>
+
+                Produção diária da área
+
+            </span>
+
+            <strong id="percentual">
+
+                0,00%
+
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =================================================
+         FÓRMULAS
+    ================================================== -->
+
+    <div class="formula">
+
+        <strong>Fórmula principal:</strong>
+
+        <br>
+
+        Árvores/hora ÷ Árvores/ha = Hectares/hora
+
+        <br><br>
+
+        <strong>Produção diária:</strong>
+
+        <br>
+
+        Árvores/hora × horas operacionais ÷ Árvores/ha
+
+        <br><br>
+
+        <strong>Total de árvores da área:</strong>
+
+        <br>
+
+        Área × Árvores/ha
+
+        <br><br>
+
+        <strong>Horas necessárias:</strong>
+
+        <br>
+
+        Total de árvores ÷ Árvores/hora
 
     </div>
 
 </div>
 
+</div>
+
+
 
 <script>
 
-function numero(id) {
 
-    const valor = document.getElementById(id).value
-        .replace(",", ".");
+/* =====================================================
+   CONVERTE VALORES
+====================================================== */
 
-    return parseFloat(valor) || 0;
+function obterNumero(id) {
+
+    let valor =
+        document.getElementById(id).value;
+
+    valor =
+        valor.toString().replace(",", ".");
+
+    let numero =
+        parseFloat(valor);
+
+    if (isNaN(numero)) {
+
+        return 0;
+
+    }
+
+    return numero;
+
 }
 
 
-function formatarNumero(valor, casas = 2) {
 
-    return valor.toLocaleString("pt-BR", {
-        minimumFractionDigits: casas,
-        maximumFractionDigits: casas
-    });
+/* =====================================================
+   FORMATAÇÃO
+====================================================== */
+
+function formatar(valor, casas) {
+
+    return valor.toLocaleString(
+        "pt-BR",
+        {
+            minimumFractionDigits: casas,
+            maximumFractionDigits: casas
+        }
+    );
 
 }
 
+
+
+/* =====================================================
+   CÁLCULO PRINCIPAL
+====================================================== */
 
 function calcular() {
 
-    const arvoresHora = numero("arvoresHora");
-    const arvoresHa = numero("arvoresHa");
-    const area = numero("area");
-    const horasDisponiveis = numero("horasDisponiveis");
 
-    const mensagem = document.getElementById("mensagem");
+    /*
+     * -------------------------------------------------
+     * ENTRADAS
+     * -------------------------------------------------
+     */
+
+    const arvoresHora =
+        obterNumero("arvoresHora");
+
+
+    const arvoresHa =
+        obterNumero("arvoresHa");
+
+
+    const area =
+        obterNumero("area");
+
+
+    const maquinas =
+        obterNumero("maquinas");
+
+
+    const horas =
+        obterNumero("horas");
+
+
+
+    const mensagem =
+        document.getElementById("mensagem");
+
 
     mensagem.innerHTML = "";
 
 
-    /*
-     * ==========================================================
-     * NOVA REGRA PRINCIPAL
-     * ==========================================================
-     *
-     * Árvores/hora:
-     *     valor informado manualmente pelo operador no VMI.
-     *
-     * Árvores/ha:
-     *     quantidade real de árvores existente no hectare.
-     *
-     * Não existe mais a base fixa de 1.800 árvores.
-     *
-     * HA/h = Árvores/hora ÷ Árvores/ha
-     * ==========================================================
-     */
 
+    /*
+     * -------------------------------------------------
+     * VALIDAÇÕES
+     * -------------------------------------------------
+     */
 
     if (arvoresHora <= 0) {
 
-        mensagem.innerHTML =
-            '<div class="erro">Informe um valor válido de árvores por hora (VMI).</div>';
+        mostrarErro(
+            "Informe a quantidade de árvores por hora do VMI."
+        );
 
         limparResultados();
 
         return;
+
     }
 
 
     if (arvoresHa <= 0) {
 
-        mensagem.innerHTML =
-            '<div class="erro">Informe a quantidade de árvores por hectare.</div>';
+        mostrarErro(
+            "Informe a quantidade de árvores por hectare."
+        );
 
         limparResultados();
 
         return;
-    }
-
-
-    // PRODUÇÃO EM HECTARES POR HORA
-    const haHora = arvoresHora / arvoresHa;
-
-
-    // TOTAL DE ÁRVORES DA ÁREA
-    let totalArvores = 0;
-
-    if (area > 0) {
-        totalArvores = area * arvoresHa;
-    }
-
-
-    // HORAS NECESSÁRIAS PARA PRODUZIR A ÁREA
-    let horasNecessarias = 0;
-
-    if (area > 0) {
-
-        horasNecessarias =
-            totalArvores / arvoresHora;
 
     }
 
 
-    // PRODUÇÃO DURANTE AS HORAS DISPONÍVEIS
-    let producaoPeriodo = 0;
+    if (area < 0) {
 
-    if (horasDisponiveis > 0) {
+        mostrarErro(
+            "A área não pode ser negativa."
+        );
 
-        producaoPeriodo =
-            haHora * horasDisponiveis;
+        limparResultados();
 
-    }
-
-
-    // ÁRVORES CORTADAS DURANTE O PERÍODO
-    let arvoresPeriodo = 0;
-
-    if (horasDisponiveis > 0) {
-
-        arvoresPeriodo =
-            arvoresHora * horasDisponiveis;
+        return;
 
     }
 
 
-    // PERCENTUAL DA ÁREA PRODUZIDA
-    let percentual = 0;
+    if (maquinas < 0) {
 
-    if (area > 0 && producaoPeriodo > 0) {
+        mostrarErro(
+            "A quantidade de máquinas não pode ser negativa."
+        );
 
-        percentual =
-            (producaoPeriodo / area) * 100;
+        limparResultados();
+
+        return;
 
     }
+
+
+    if (horas <= 0) {
+
+        mostrarErro(
+            "Informe as horas operacionais."
+        );
+
+        limparResultados();
+
+        return;
+
+    }
+
 
 
     /*
-     * LIMITA O PERCENTUAL A 100%
-     * SOMENTE PARA A EXIBIÇÃO.
+     * =================================================
+     * NOVA LÓGICA
+     *
+     * NÃO EXISTE MAIS:
+     *
+     * arvoresHa = 1800
+     *
+     * O VALOR É INFORMADO PELO USUÁRIO.
+     * =================================================
      */
 
-    const percentualExibicao =
-        Math.min(percentual, 100);
 
+    /*
+     * -------------------------------------------------
+     * HECTARES POR HORA
+     *
+     * Exemplo:
+     *
+     * 110 árvores/h
+     * 1300 árvores/ha
+     *
+     * 110 / 1300
+     *
+     * = 0,0846 ha/h
+     * -------------------------------------------------
+     */
+
+    const haHora =
+        arvoresHora / arvoresHa;
+
+
+
+    /*
+     * -------------------------------------------------
+     * ÁRVORES POR DIA / MÁQUINA
+     * -------------------------------------------------
+     */
+
+    const arvoresDia =
+        arvoresHora * horas;
+
+
+
+    /*
+     * -------------------------------------------------
+     * HECTARES POR DIA / MÁQUINA
+     * -------------------------------------------------
+     */
+
+    const haDia =
+        arvoresDia / arvoresHa;
+
+
+
+    /*
+     * -------------------------------------------------
+     * HECTARES TOTAIS POR DIA
+     * -------------------------------------------------
+     */
+
+    const haDiaTotal =
+        haDia * maquinas;
+
+
+
+    /*
+     * -------------------------------------------------
+     * ÁRVORES TOTAIS POR DIA
+     * -------------------------------------------------
+     */
+
+    const arvoresDiaTotal =
+        arvoresDia * maquinas;
+
+
+
+    /*
+     * -------------------------------------------------
+     * TOTAL DE ÁRVORES EXISTENTES NA ÁREA
+     *
+     * Área × árvores/ha
+     * -------------------------------------------------
+     */
+
+    const totalArvores =
+        area * arvoresHa;
+
+
+
+    /*
+     * -------------------------------------------------
+     * HORAS NECESSÁRIAS
+     *
+     * Total de árvores ÷ árvores/hora
+     *
+     * Aqui consideramos a produção das máquinas.
+     * -------------------------------------------------
+     */
+
+    let horasNecessarias = 0;
+
+
+    if (arvoresDiaTotal > 0) {
+
+        horasNecessarias =
+            totalArvores /
+            (arvoresHora * maquinas);
+
+    }
+
+
+
+    /*
+     * -------------------------------------------------
+     * DIAS NECESSÁRIOS
+     * -------------------------------------------------
+     */
+
+    let diasNecessarios = 0;
+
+
+    if (haDiaTotal > 0) {
+
+        diasNecessarios =
+            area /
+            haDiaTotal;
+
+    }
+
+
+
+    /*
+     * -------------------------------------------------
+     * PERCENTUAL DA ÁREA PRODUZIDA POR DIA
+     * -------------------------------------------------
+     */
+
+    let percentual = 0;
+
+
+    if (area > 0) {
+
+        percentual =
+            (haDiaTotal / area) * 100;
+
+    }
+
+
+
+    /*
+     * -------------------------------------------------
+     * MOSTRAR RESULTADOS
+     * -------------------------------------------------
+     */
 
     document.getElementById("haHora").textContent =
-        formatarNumero(haHora, 3) + " ha/h";
+        formatar(haHora, 3) + " ha/h";
+
+
+    document.getElementById("haDia").textContent =
+        formatar(haDia, 2) + " ha";
+
+
+    document.getElementById("haDiaTotal").textContent =
+        formatar(haDiaTotal, 2) + " ha";
+
+
+    document.getElementById("arvoresDia").textContent =
+        formatar(arvoresDia, 0);
+
+
+    document.getElementById("arvoresDiaTotal").textContent =
+        formatar(arvoresDiaTotal, 0);
 
 
     document.getElementById("totalArvores").textContent =
-        formatarNumero(totalArvores, 0);
+        formatar(totalArvores, 0);
 
 
     document.getElementById("horasNecessarias").textContent =
-        formatarNumero(horasNecessarias, 2) + " h";
+        formatar(horasNecessarias, 2) + " h";
 
 
-    document.getElementById("producaoPeriodo").textContent =
-        formatarNumero(producaoPeriodo, 2) + " ha";
-
-
-    document.getElementById("arvoresPeriodo").textContent =
-        formatarNumero(arvoresPeriodo, 0);
+    document.getElementById("diasNecessarios").textContent =
+        formatar(diasNecessarios, 2) + " dias";
 
 
     document.getElementById("percentual").textContent =
-        formatarNumero(percentualExibicao, 2) + "%";
+        formatar(percentual, 2) + "%";
 
 }
 
+
+
+/* =====================================================
+   ERRO
+====================================================== */
+
+function mostrarErro(texto) {
+
+    document.getElementById("mensagem").innerHTML =
+
+        '<div class="erro">' +
+        texto +
+        '</div>';
+
+}
+
+
+
+/* =====================================================
+   LIMPAR RESULTADOS
+====================================================== */
 
 function limparResultados() {
 
     document.getElementById("haHora").textContent =
         "0,000 ha/h";
 
+
+    document.getElementById("haDia").textContent =
+        "0,00 ha";
+
+
+    document.getElementById("haDiaTotal").textContent =
+        "0,00 ha";
+
+
+    document.getElementById("arvoresDia").textContent =
+        "0";
+
+
+    document.getElementById("arvoresDiaTotal").textContent =
+        "0";
+
+
     document.getElementById("totalArvores").textContent =
         "0";
+
 
     document.getElementById("horasNecessarias").textContent =
         "0,00 h";
 
-    document.getElementById("producaoPeriodo").textContent =
-        "0,00 ha";
 
-    document.getElementById("arvoresPeriodo").textContent =
-        "0";
+    document.getElementById("diasNecessarios").textContent =
+        "0,00 dias";
+
 
     document.getElementById("percentual").textContent =
         "0,00%";
@@ -527,23 +1001,30 @@ function limparResultados() {
 }
 
 
-/*
- * PERMITE USAR ENTER PARA CALCULAR
- */
 
-document.querySelectorAll("input").forEach(function(input) {
+/* =====================================================
+   ENTER PARA CALCULAR
+====================================================== */
 
-    input.addEventListener("keydown", function(event) {
+document
+    .querySelectorAll("input")
+    .forEach(function(input) {
 
-        if (event.key === "Enter") {
+        input.addEventListener(
+            "keydown",
+            function(event) {
 
-            calcular();
+                if (event.key === "Enter") {
 
-        }
+                    calcular();
+
+                }
+
+            }
+        );
 
     });
 
-});
 
 </script>
 
